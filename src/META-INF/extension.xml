@@ -1,0 +1,60 @@
+<extension id="org.exbin.deltahex.jdeveloper" version="0.1.0" esdk-version="1.0"
+           rsbundle-class="org.exbin.deltahex.jdeveloper.Res" xmlns="http://jcp.org/jsr/198/extension-manifest">
+  <name>${EXTENSION_NAME}</name>
+  <owner>ExBin Project</owner>
+  <dependencies>
+    <import>oracle.ide</import>
+  </dependencies>
+  <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
+    <!-- TODO Declare triggering functionality provided by extension: org.exbin.deltahex.jdeveloper -->
+    <triggers>
+       <editors xmlns="http://xmlns.oracle.com/ide/extension">
+         <!-- Register our custom editor -->
+          <editor id="org.exbin.deltahex.jdeveloper.DeltaHexEditor"
+                  label="DeltaHex Editor"
+                  default="true"
+                  duplicable="false"
+                  editor-class="org.exbin.deltahex.jdeveloper.DeltaHexEditor">
+            <node-type class="oracle.ide.model.TextNode" />              
+            <node-type class="oracle.jdeveloper.model.JavaSourceNode" />
+          </editor>
+        </editors>
+    </triggers>
+  </trigger-hooks>
+  <hooks>
+    <feature-hook>
+      <description><![CDATA[
+<p>Hexadecimal editor based on deltahex library. Use "Open as Hex" context menu item to edit files in projects.</p>
+
+<h1>Preview</h1>
+<p><img src="http://deltahex.exbin.org/images/deltahex-intellij-plugin-preview-0.1.1.png" alt="deltahex-intellij-plugin-preview"/></p>
+
+<h1>Features</h1>
+<ul><li>Show data as hexadecimal codes and text preview</li>
+<li>Insert and overwrite edit modes</li>
+<li>Support for selection and clipboard actions</li>
+<li>Support for undo/redo</li>
+<li>Support for encoding selection</li>
+<li>Support for showing unprintable/whitespace characters</li>
+<li>Codes can be also binary, octal or decimal</li>
+<li>Searching for text / hexadecimal code with matching highlighting</li>
+<li>Delta mode - Changes are stored only in memory till save</li>
+<li>Support for huge files</li></ul>
+    ]]></description>
+      <optional>true</optional>
+    </feature-hook>
+    <!-- TODO Declare functionality provided by extension: org.exbin.deltahex.jdeveloper -->
+    <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+      <actions>
+        <action id="org.exbin.deltahex.jdeveloper.openAsHex">
+          <properties>
+            <property name="Name">Open As Hex</property>
+            <property name="SmallIcon"></property>
+            <property name="LongDescription">Open As Hex</property>
+          </properties>
+          <controller-class>org.exbin.deltahex.jdeveloper.OpenAsHexController</controller-class>
+        </action>
+      </actions>
+    </jdeveloper-hook>
+  </hooks>
+</extension>
