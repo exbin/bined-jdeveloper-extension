@@ -12,7 +12,7 @@
          <!-- Register our custom editor -->
           <editor id="org.exbin.deltahex.jdeveloper.DeltaHexEditor"
                   label="Binary"
-                  default="true"
+                  default="false"
                   duplicable="false"
                   editor-class="org.exbin.deltahex.jdeveloper.DeltaHexEditor">
             <node-type class="oracle.ide.model.TextNode" />              

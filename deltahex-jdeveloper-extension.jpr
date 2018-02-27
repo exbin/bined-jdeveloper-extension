@@ -79,18 +79,17 @@
                   <url path="src/META-INF/MANIFEST.MF"/>
                </list>
                <value n="bundleManifestVersion" v="2.0.0"/>
+               <value n="bundleName" v="DeltaHex Extension"/>
                <value n="bundleSymbolicName" v="org.exbin.deltahex.jdeveloper"/>
                <value n="bundleVersion" v="0.1.0"/>
                <value n="hasManifest" v="true"/>
             </hash>
             <hash n="exportDefinition">
-               <hash n="contributors">
-                  <list n="contributors-list">
-                     <hash>
-                        <value n="contributor" v="filegroups"/>
-                     </hash>
-                  </list>
-               </hash>
+               <list n="contributors">
+                  <hash>
+                     <value n="type" v="filegroups"/>
+                  </hash>
+               </list>
                <hash n="rules">
                   <list n="rules">
                      <hash>
@@ -125,18 +124,19 @@
                   </hash>
                </list>
             </hash>
+            <hash n="importDefinition">
+               <hash n="rules"/>
+            </hash>
             <url n="jarURL" path="../../../../app/Oracle/Middleware/jdeveloper/jdev/extensions/org.exbin.deltahex.jdeveloper.jar"/>
             <hash n="libraryDependencies"/>
             <value n="profileClass" v="oracle.jdevimpl.extensiondt.deploy.ExtensionProfile"/>
             <value n="profileName" v="edtExtensionProfile"/>
             <hash n="requireBundles">
-               <hash n="contributors">
-                  <list n="contributors-list">
-                     <hash>
-                        <value n="contributor" v="profile-dependencies"/>
-                     </hash>
-                  </list>
-               </hash>
+               <list n="contributors">
+                  <hash>
+                     <value n="type" v="profile-dependencies"/>
+                  </hash>
+               </list>
                <hash n="rules">
                   <list n="rules">
                      <hash>
@@ -150,6 +150,33 @@
       </hash>
       <list n="profileList">
          <string v="edtExtensionProfile"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectLibraries">
+      <list n="exportedReferences">
+         <hash>
+            <value n="id" v="Javatools-nodeps.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+      <hash n="internalDefinitions">
+         <list n="libraryDefinitions">
+            <hash>
+               <list n="classPath">
+                  <url path="lib/javatools-nodeps.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Javatools-nodeps.jar"/>
+               <value n="id" v="Javatools-nodeps.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+         </list>
+      </hash>
+      <list n="libraryReferences">
+         <hash>
+            <value n="id" v="Javatools-nodeps.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">

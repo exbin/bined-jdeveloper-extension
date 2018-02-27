@@ -39,9 +39,10 @@ public class DeltaHexEditorPanel extends JPanel {
     private void jbInit() throws Exception {
         this.setLayout(new BorderLayout() );
         codeArea = new CodeArea();
-        byte[] exampleData = new byte[] { 1, 2, 3, 4, 5, 6 };
-        BinaryData data = new ByteArrayData(exampleData);
-        codeArea.setData(data);
         add(codeArea, BorderLayout.CENTER);
+    }
+    
+    public void setData(BinaryData data) {
+        codeArea.setData(data);
     }
 }
