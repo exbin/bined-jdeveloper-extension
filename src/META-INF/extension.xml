@@ -11,7 +11,7 @@
        <editors xmlns="http://xmlns.oracle.com/ide/extension">
          <!-- Register our custom editor -->
           <editor id="org.exbin.deltahex.jdeveloper.DeltaHexEditor"
-                  label="DeltaHex Editor"
+                  label="Binary"
                   default="true"
                   duplicable="false"
                   editor-class="org.exbin.deltahex.jdeveloper.DeltaHexEditor">

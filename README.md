@@ -8,7 +8,7 @@ Homepage: http://deltahex.exbin.org
 Screenshot
 ----------
 
-![DeltaHex-Editor Screenshot](images/intellij-screenshot.png?raw=true)
+![DeltaHex-Editor Screenshot](images/jdeveloper-screenshot.png?raw=true)
 
 Features
 --------
