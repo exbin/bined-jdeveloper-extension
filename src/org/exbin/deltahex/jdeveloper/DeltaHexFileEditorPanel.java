@@ -24,11 +24,11 @@ import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.utils.binary_data.BinaryData;
 import org.exbin.utils.binary_data.ByteArrayData;
 
-public class DeltaHexEditorPanel extends JPanel {
+public class DeltaHexFileEditorPanel extends JPanel {
     
     private CodeArea codeArea;
 
-    public DeltaHexEditorPanel() {
+    public DeltaHexFileEditorPanel() {
         try {
             jbInit();
         } catch (Exception e) {

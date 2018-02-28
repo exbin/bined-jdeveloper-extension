@@ -1,7 +1,7 @@
 DeltaHex Editor - JDeveloper Extension
 ======================================
 
-Hexadecimal viewer/editor extension for JDeveloper IDE.
+Hexadecimal viewer/editor extension for Oracle JDeveloper / SQL Developer.
 
 Homepage: http://deltahex.exbin.org  
 
@@ -27,9 +27,9 @@ Features
 Compiling
 ---------
 
-Java Development Kit (JDK) version 7 or later is required to build this project.
+Java Development Kit (JDK) version 8 or later is required to build this project.
 
-IntelliJ Idea platform is necessary for build of this plugin. See. http://jetbrains.org  
+Oracle JDeveloper is necessary for build of this plugin. See. http://www.oracle.com/technetwork/developer-tools/jdev/  
 
 License
 -------

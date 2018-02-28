@@ -20,6 +20,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -216,6 +218,10 @@ public class GoToHexPanel extends javax.swing.JPanel {
 
     public void initFocus() {
         ((JSpinner.DefaultEditor) positionSpinner.getEditor()).getTextField().requestFocusInWindow();
+    }
+
+    public JComponent getInitFocusComponent() {
+        return ((JSpinner.DefaultEditor) positionSpinner.getEditor()).getTextField();
     }
 
     public long getGoToPosition() {

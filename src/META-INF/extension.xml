@@ -14,8 +14,13 @@
                   label="Binary"
                   default="false"
                   duplicable="false"
-                  editor-class="org.exbin.deltahex.jdeveloper.DeltaHexEditor">
-            <node-type class="oracle.ide.model.TextNode" />              
+                  editor-class="org.exbin.deltahex.jdeveloper.DeltaHexFileEditor">
+            <node-type class="oracle.ide.model.TextNode" />
+            <node-type class="oracle.ide.model.ImageNode" />
+            <node-type class="oracle.ide.model.DataNode" />
+            <node-type class="oracle.ide.model.DeployableTextNode" />
+            <node-type class="oracle.ide.model.UnrecognizedTextNode" />
+            <node-type class="oracle.ide.model.XmlDataNode" />
             <node-type class="oracle.jdeveloper.model.JavaSourceNode" />
           </editor>
         </editors>

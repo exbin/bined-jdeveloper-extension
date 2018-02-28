@@ -49,6 +49,16 @@
       <url n="extensiondt.manifest" path="src/META-INF/extension.xml"/>
       <value n="extensiondt.platform" v="dt_jdev"/>
    </hash>
+   <hash n="oracle.ide.model.ResourcePaths">
+      <hash n="resourcesContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="resources/"/>
+         </list>
+      </hash>
+   </hash>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
          <string v="ExtensionDT"/>
