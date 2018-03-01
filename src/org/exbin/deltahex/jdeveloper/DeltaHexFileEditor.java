@@ -119,7 +119,6 @@ public class DeltaHexFileEditor extends Editor {
     public static final String PREFERENCES_SHOW_VALUES_PANEL = "valuesPanel";
 
     private Preferences preferences;
-//    private final Project project;
     private JPanel editorPanel;
     private JPanel headerPanel;
     private static SegmentsRepository segmentsRepository = null;
@@ -144,7 +143,6 @@ public class DeltaHexFileEditor extends Editor {
     private boolean deltaMemoryMode = true;
     private String displayName;
     private long documentOriginalSize;
-    private DeltaHexFileEditorPanel _panel = null;
 
     public DeltaHexFileEditor() {
         // Project project
@@ -155,6 +153,7 @@ public class DeltaHexFileEditor extends Editor {
         preferences = getPreferences();
 
         codeArea = new CodeArea();
+        codeArea.setEditable(false);
         codeArea.setPainter(new HighlightNonAsciiCodeAreaPainter(codeArea));
         codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.getCaret().setBlinkRate(300);
@@ -394,18 +393,15 @@ public class DeltaHexFileEditor extends Editor {
 
                 BinaryData data = new ByteArrayData(outputStream.toByteArray());
                 getGUI();
-                _panel.setData(data);
+                codeArea.setData(data);
             } catch (IOException ex) {
                 // TODO
             }
-            
 //        }
     }
 
     public Component getGUI() {
-        if (_panel == null)
-            _panel = new DeltaHexFileEditorPanel();
-        return _panel;
+        return editorPanel;
     }
 
     @Override
@@ -447,7 +443,7 @@ public class DeltaHexFileEditor extends Editor {
         controlToolBar.setFloatable(false);
         controlToolBar.setRollover(true);
 
-//        saveFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/document-save.png")));
+        saveFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/document-save.png")));
         saveFileButton.setToolTipText("Save current file");
         saveFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,7 +454,7 @@ public class DeltaHexFileEditor extends Editor {
         controlToolBar.add(saveFileButton);
         controlToolBar.add(jSeparator1);
 
-//        undoEditButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/edit-undo.png")));
+        undoEditButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/edit-undo.png")));
         undoEditButton.setToolTipText("Undo last operation");
         undoEditButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,7 +463,7 @@ public class DeltaHexFileEditor extends Editor {
         });
         controlToolBar.add(undoEditButton);
 
-//        redoEditButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/edit-redo.png")));
+        redoEditButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/edit-redo.png")));
         redoEditButton.setToolTipText("Redo last undid operation");
         redoEditButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -477,7 +473,7 @@ public class DeltaHexFileEditor extends Editor {
         controlToolBar.add(redoEditButton);
         controlToolBar.add(jSeparator2);
 
-//        lineWrappingToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/deltahex-linewrap.png")));
+        lineWrappingToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/deltahex-linewrap.png")));
         lineWrappingToggleButton.setToolTipText("Wrap line to window size");
         lineWrappingToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -486,7 +482,7 @@ public class DeltaHexFileEditor extends Editor {
         });
         controlToolBar.add(lineWrappingToggleButton);
 
-//        showUnprintablesToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/insert-pilcrow.png")));
+        showUnprintablesToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/deltahex/jdeveloper/resources/icons/insert-pilcrow.png")));
         showUnprintablesToggleButton.setToolTipText("Show symbols for unprintable/whitespace characters");
         showUnprintablesToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
