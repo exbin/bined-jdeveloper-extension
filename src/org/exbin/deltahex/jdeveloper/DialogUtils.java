@@ -17,7 +17,12 @@ package org.exbin.deltahex.jdeveloper;
 
 import java.awt.BorderLayout;
 
+import java.awt.Component;
+import java.awt.Dialog;
+
 import javax.swing.*;
+
+import oracle.ide.dialogs.DialogUtil;
 
 /**
  * Dialog utilities.
@@ -27,12 +32,12 @@ import javax.swing.*;
  */
 public class DialogUtils {
 
-    public static JDialog createDialog(JComponent dialogPanel, String dialogTitle) {
-        return createDialog(dialogPanel, dialogTitle, null);
+    public static Dialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle) {
+        return createDialog(parentComponent, dialogPanel, dialogTitle, null);
     }
 
-    public static JDialog createDialog(JComponent dialogPanel, String dialogTitle, JComponent focusedComponent) {
-        JDialog dialog = new JDialog();
+    public static Dialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle, JComponent focusedComponent) {
+        Dialog dialog = DialogUtil.getAncestorDialog(parentComponent);
         dialog.setTitle(dialogTitle);
         dialog.add(dialogPanel, BorderLayout.CENTER);
         focusedComponent.grabFocus();

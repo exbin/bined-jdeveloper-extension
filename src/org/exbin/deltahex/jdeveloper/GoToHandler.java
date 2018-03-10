@@ -15,6 +15,8 @@
  */
 package org.exbin.deltahex.jdeveloper;
 
+import java.awt.Dialog;
+
 import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.framework.deltahex.panel.GoToHexPanel;
 import org.exbin.framework.gui.utils.LanguageUtils;
@@ -59,7 +61,7 @@ public class GoToHandler {
                     goToPanel.setMaxPosition(codeArea.getDataSize());
                     JPanel dialogPanel = WindowUtils.createDialogPanel(goToPanel, goToControlPanel);
                     WindowUtils.assignGlobalKeyListener(dialogPanel, goToControlPanel.createOkCancelListener());
-                    final JDialog dialog = DialogUtils.createDialog(dialogPanel, "Go To Position", goToPanel.getInitFocusComponent());
+                    final Dialog dialog = DialogUtils.createDialog(codeArea, dialogPanel, "Go To Position", goToPanel.getInitFocusComponent());
                     goToControlPanel.setHandler(new DefaultControlHandler() {
                         @Override
                         public void controlActionPerformed(DefaultControlHandler.ControlActionType actionType) {

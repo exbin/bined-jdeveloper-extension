@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import oracle.ide.config.Preferences;
+
 /**
  * Encodings handler.
  *
@@ -226,21 +228,20 @@ public class EncodingsHandler implements TextEncodingPanelApi {
         item.setSelected(true);
     }
 
-//    public void loadFromPreferences(PropertiesComponent preferences) {
-//        this.preferences = preferences;
-//        setSelectedEncoding(preferences.getValue(DeltaHexFileEditor.PREFERENCES_ENCODING_SELECTED, ENCODING_UTF8));
-//        encodings.clear();
-//        String value;
-//        int i = 0;
-//        do {
-//            value = preferences.getValue(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(i), "");
-//            if (!value.isEmpty()) {
-//                encodings.add(value);
-//                i++;
-//            }
-//        } while (!value.isEmpty());
-//        rebuildEncodings();
-//    }
+    public void loadFromPreferences(Preferences preferences) {
+        setSelectedEncoding(preferences.getProperties().getString(DeltaHexFileEditor.PREFERENCES_ENCODING_SELECTED, ENCODING_UTF8));
+        encodings.clear();
+        String value;
+        int i = 0;
+        do {
+            value = preferences.getProperties().getString(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(i), "");
+            if (!value.isEmpty()) {
+                encodings.add(value);
+                i++;
+            }
+        } while (!value.isEmpty());
+        rebuildEncodings();
+    }
 
     public void cycleEncodings() {
         int menuIndex = 0;

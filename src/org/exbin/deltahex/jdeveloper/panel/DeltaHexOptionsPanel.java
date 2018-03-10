@@ -37,7 +37,8 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.prefs.Preferences;
+
+import oracle.ide.config.Preferences;
 
 /**
  * Hexadecimal editor options panel.
@@ -569,7 +570,7 @@ public class DeltaHexOptionsPanel extends javax.swing.JPanel {
         textFontPanel.setVisible(true);
         JPanel dialogPanel = WindowUtils.createDialogPanel(textFontPanel, textFontControlPanel);
         WindowUtils.assignGlobalKeyListener(dialogPanel, textFontControlPanel.createOkCancelListener());
-        final JDialog dialog = DialogUtils.createDialog(dialogPanel, "Select Font");
+        final Dialog dialog = DialogUtils.createDialog(this, dialogPanel, "Select Font");
 
         textFontControlPanel.setHandler(new DefaultControlHandler() {
             @Override

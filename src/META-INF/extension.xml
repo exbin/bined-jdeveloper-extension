@@ -5,6 +5,14 @@
   <dependencies>
     <import>oracle.ide</import>
   </dependencies>
+  <required-bundles>
+    <bundle>oracle.javamodel-rt</bundle>
+    <bundle>oracle.javatools-nodeps</bundle>
+    <bundle>oracle.idert</bundle>
+    <bundle>oracle.jewt-core</bundle>
+    <bundle>oracle.javatools</bundle>
+    <bundle>oracle.javatools.data</bundle>
+  </required-bundles>
   <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
     <!-- TODO Declare triggering functionality provided by extension: org.exbin.deltahex.jdeveloper -->
     <triggers>
