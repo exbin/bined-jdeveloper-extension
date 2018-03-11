@@ -14,15 +14,15 @@ Features
 --------
 
 - Data as hexadecimal codes and text preview
-- Insert and overwrite edit modes
+- TODO: Insert and overwrite edit modes
 - Support for selection and clipboard
-- Support for undo/redo
+- TODO: Support for undo/redo
 - Support for encoding selection
 - Support for showing unprintable/whitespace characters
 - Codes can be also binary, octal or decimal
 - Searching for text / hexadecimal code with matching highlighting
-- Delta mode - Changes are stored only in memory till save
-- Support for huge files
+- TODO: Delta mode - Changes are stored only in memory till save
+- TODO: Support for huge files
 
 Compiling
 ---------
