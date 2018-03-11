@@ -1,2 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ClassPath: .
+Import-Package: oracle.javatools.data,
+ oracle.bali.ewt.dialog,
+ oracle.javatools.controls
+Require-Bundle: oracle.jewt-core

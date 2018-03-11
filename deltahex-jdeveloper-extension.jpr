@@ -67,6 +67,31 @@
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
+      <list n="copyRes">
+         <string v=".GIF"/>
+         <string v=".JPEG"/>
+         <string v=".JPG"/>
+         <string v=".PNG"/>
+         <string v=".cpx"/>
+         <string v=".dcx"/>
+         <string v=".ejx"/>
+         <string v=".gif"/>
+         <string v=".ini"/>
+         <string v=".jpeg"/>
+         <string v=".jpg"/>
+         <string v=".png"/>
+         <string v=".properties"/>
+         <string v=".sva"/>
+         <string v=".tag"/>
+         <string v=".tld"/>
+         <string v=".wsdl"/>
+         <string v=".xcfg"/>
+         <string v=".xlf"/>
+         <string v=".xml"/>
+         <string v=".xsd"/>
+         <string v=".xsl"/>
+         <string v=".txt"/>
+      </list>
       <value n="internalEncoding" v="UTF8"/>
       <list n="Javac.commandline.optionlist">
          <string v="-g"/>
@@ -92,6 +117,8 @@
                <value n="bundleName" v="DeltaHex Extension"/>
                <value n="bundleSymbolicName" v="org.exbin.deltahex.jdeveloper"/>
                <value n="bundleVersion" v="0.1.0"/>
+               <value n="compressed" v="true"/>
+               <value n="compressionLevel" v="9"/>
                <value n="hasManifest" v="true"/>
             </hash>
             <hash n="exportDefinition">
@@ -161,6 +188,16 @@
       <list n="profileList">
          <string v="edtExtensionProfile"/>
       </list>
+   </hash>
+   <hash n="oracle.jdeveloper.model.PathsConfiguration">
+      <hash n="javaContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/"/>
+         </list>
+      </hash>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectLibraries">
       <list n="exportedReferences">

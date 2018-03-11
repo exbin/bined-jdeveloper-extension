@@ -62,7 +62,7 @@ public class EncodingsHandler implements TextEncodingPanelApi {
     public static final String UTF_ENCODING_TOOLTIP = "Set encoding UTF-8";
 
     private Action manageEncodingsAction;
-//    private PropertiesComponent preferences;
+    private Preferences preferences;
 
     public EncodingsHandler(TextEncodingStatusApi textEncodingStatus) {
         resourceBundle = LanguageUtils.getResourceBundleByClass(EncodingsHandler.class);
@@ -103,51 +103,51 @@ public class EncodingsHandler implements TextEncodingPanelApi {
                 textEncodingPanel.setEncodingList(encodings);
                 final OptionsControlPanel controlPanel = new OptionsControlPanel();
                 JPanel dialogPanel = WindowUtils.createDialogPanel(textEncodingPanel, controlPanel);
-//                DialogWrapper dialog = DialogUtils.createDialog(dialogPanel, "Manage Encodings");
-//                controlPanel.setHandler(new OptionsControlHandler() {
-//                    @Override
-//                    public void controlActionPerformed(OptionsControlHandler.ControlActionType actionType) {
-//                        if (actionType != OptionsControlHandler.ControlActionType.CANCEL) {
-//                            encodings = textEncodingPanel.getEncodingList();
-//                            rebuildEncodings();
-//                            if (actionType == OptionsControlHandler.ControlActionType.SAVE) {
-//                                // Save encodings
-//                                for (int i = 0; i < encodings.size(); i++) {
-//                                    preferences.setValue(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(i), encodings.get(i));
-//                                }
-//                                preferences.unsetValue(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(encodings.size()));
-//                            }
-//                        }
-//
-//                        dialog.close(0);
-//                    }
-//                });
-//                textEncodingPanel.setAddEncodingsOperation(new TextEncodingPanel.AddEncodingsOperation() {
-//                    @Override
-//                    public List<String> run(List<String> usedEncodings) {
-//                        final List<String> result = new ArrayList<>();
-//                        final AddEncodingPanel addEncodingPanel = new AddEncodingPanel();
-//                        addEncodingPanel.setUsedEncodings(usedEncodings);
-//                        DefaultControlPanel controlPanel = new DefaultControlPanel(addEncodingPanel.getResourceBundle());
-//                        JPanel dialogPanel = WindowUtils.createDialogPanel(addEncodingPanel, controlPanel);
-//                        final DialogWrapper addEncodingDialog = DialogUtils.createDialog(dialogPanel, "Add Encodings");
-//                        controlPanel.setHandler(new DefaultControlHandler() {
-//                            @Override
-//                            public void controlActionPerformed(DefaultControlHandler.ControlActionType actionType) {
-//                                if (actionType == DefaultControlHandler.ControlActionType.OK) {
-//                                    result.addAll(addEncodingPanel.getEncodings());
-//                                }
-//
-//                                addEncodingDialog.close(0);
-//                            }
-//                        });
-//                        WindowUtils.assignGlobalKeyListener(addEncodingDialog.getWindow(), controlPanel.createOkCancelListener());
-//                        addEncodingDialog.showAndGet();
-//                        return result;
-//                    }
-//                });
-//                WindowUtils.assignGlobalKeyListener(dialog.getWindow(), controlPanel.createOkCancelListener());
-//                dialog.showAndGet();
+                Dialog dialog = DialogUtils.createDialog(null, dialogPanel, "Manage Encodings");
+                controlPanel.setHandler(new OptionsControlHandler() {
+                    @Override
+                    public void controlActionPerformed(OptionsControlHandler.ControlActionType actionType) {
+                        if (actionType != OptionsControlHandler.ControlActionType.CANCEL) {
+                            encodings = textEncodingPanel.getEncodingList();
+                            rebuildEncodings();
+                            if (actionType == OptionsControlHandler.ControlActionType.SAVE) {
+                                // Save encodings
+                                for (int i = 0; i < encodings.size(); i++) {
+                                    preferences.getProperties().putString(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(i), encodings.get(i));
+                                }
+                                preferences.getProperties().remove(DeltaHexFileEditor.PREFERENCES_ENCODING_PREFIX + Integer.toString(encodings.size()));
+                            }
+                        }
+
+                        WindowUtils.closeWindow(dialog);
+                    }
+                });
+                textEncodingPanel.setAddEncodingsOperation(new TextEncodingPanel.AddEncodingsOperation() {
+                    @Override
+                    public List<String> run(List<String> usedEncodings) {
+                        final List<String> result = new ArrayList<>();
+                        final AddEncodingPanel addEncodingPanel = new AddEncodingPanel();
+                        addEncodingPanel.setUsedEncodings(usedEncodings);
+                        DefaultControlPanel controlPanel = new DefaultControlPanel(addEncodingPanel.getResourceBundle());
+                        JPanel dialogPanel = WindowUtils.createDialogPanel(addEncodingPanel, controlPanel);
+                        final Dialog addEncodingDialog = DialogUtils.createDialog(null, dialogPanel, "Add Encodings");
+                        controlPanel.setHandler(new DefaultControlHandler() {
+                            @Override
+                            public void controlActionPerformed(DefaultControlHandler.ControlActionType actionType) {
+                                if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                                    result.addAll(addEncodingPanel.getEncodings());
+                                }
+
+                                WindowUtils.closeWindow(dialog);
+                            }
+                        });
+                        WindowUtils.assignGlobalKeyListener(addEncodingDialog, controlPanel.createOkCancelListener());
+                        addEncodingDialog.setVisible(true);
+                        return result;
+                    }
+                });
+                WindowUtils.assignGlobalKeyListener(dialog, controlPanel.createOkCancelListener());
+                dialog.setVisible(true);
             }
         };
         ActionUtils.setupAction(manageEncodingsAction, resourceBundle, "manageEncodingsAction");

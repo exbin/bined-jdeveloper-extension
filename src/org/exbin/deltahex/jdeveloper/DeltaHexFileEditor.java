@@ -170,8 +170,7 @@ public class DeltaHexFileEditor extends Editor {
             public void setEncoding(String encodingName) {
                 codeArea.setCharset(Charset.forName(encodingName));
                 encodingStatus.setEncoding(encodingName);
-                HashStructure properties = preferences.getProperties();
-                properties.putString(DeltaHexFileEditor.PREFERENCES_ENCODING_SELECTED, encodingName);
+                preferences.getProperties().putString(DeltaHexFileEditor.PREFERENCES_ENCODING_SELECTED, encodingName);
                 try {
                     preferences.save();
                 } catch (IOException e) {
@@ -208,7 +207,7 @@ public class DeltaHexFileEditor extends Editor {
         editorPanel.add(codeArea, BorderLayout.CENTER);
         editorPanel.add(statusPanel, BorderLayout.SOUTH);
         registerHexStatus(statusPanel);
-//        goToHandler = new GoToHandler(codeArea);
+        goToHandler = new GoToHandler(codeArea);
 
         codeArea.addMouseListener(new MouseAdapter() {
             @Override

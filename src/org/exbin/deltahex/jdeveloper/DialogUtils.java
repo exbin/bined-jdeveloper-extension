@@ -18,10 +18,11 @@ package org.exbin.deltahex.jdeveloper;
 import java.awt.BorderLayout;
 
 import java.awt.Component;
-import java.awt.Dialog;
+import oracle.bali.ewt.dialog.JEWTDialog;
 
 import javax.swing.*;
 
+import oracle.ide.Ide;
 import oracle.ide.dialogs.DialogUtil;
 
 /**
@@ -32,15 +33,18 @@ import oracle.ide.dialogs.DialogUtil;
  */
 public class DialogUtils {
 
-    public static Dialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle) {
+    public static JDialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle) {
         return createDialog(parentComponent, dialogPanel, dialogTitle, null);
     }
 
-    public static Dialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle, JComponent focusedComponent) {
-        Dialog dialog = DialogUtil.getAncestorDialog(parentComponent);
-        dialog.setTitle(dialogTitle);
+    public static JDialog createDialog(Component parentComponent, JComponent dialogPanel, String dialogTitle, JComponent focusedComponent) {
+        JEWTDialog dialog = JEWTDialog.createDialog(Ide.getMainWindow(), dialogTitle, JEWTDialog.BUTTON_NONE);
         dialog.add(dialogPanel, BorderLayout.CENTER);
-        focusedComponent.grabFocus();
+        dialog.setSize(400, 300);
+        dialog.setCenterOver(parentComponent);
+        if (focusedComponent != null) {
+            focusedComponent.grabFocus();
+        }
         
         return dialog;
     }
