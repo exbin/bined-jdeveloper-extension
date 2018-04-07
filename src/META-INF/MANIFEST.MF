@@ -3,4 +3,12 @@ Bundle-ClassPath: .
 Import-Package: oracle.javatools.data,
  oracle.bali.ewt.dialog,
  oracle.javatools.controls
-Require-Bundle: oracle.jewt-core
+Require-Bundle: oracle.jewt-core,
+  oracle.javamodel-rt,
+  oracle.javatools-nodeps,
+  oracle.ide,
+  oracle.idert,
+  oracle.jewt-core,
+  oracle.javatools,
+  oracle.icons
+
