@@ -20,12 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import javax.annotation.Nonnull;
 
 /**
  * Basic implementation of editable binary data interface using byte array.
  *
- * @version 0.1.2 2016/12/13
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2018/07/25
+ * @author ExBin Project (https://exbin.org)
  */
 public class ByteArrayEditableData extends ByteArrayData implements EditableBinaryData {
 
@@ -35,7 +36,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
         this(new byte[0]);
     }
 
-    public ByteArrayEditableData(byte[] data) {
+    public ByteArrayEditableData(@Nonnull byte[] data) {
         super(data);
     }
 
@@ -88,7 +89,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void insert(long startFrom, byte[] insertedData) {
+    public void insert(long startFrom, @Nonnull byte[] insertedData) {
         if (startFrom > data.length) {
             throw new OutOfBoundsException("Data can be inserted only inside or at the end");
         }
@@ -107,7 +108,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void insert(long startFrom, byte[] insertedData, int insertedDataOffset, int length) {
+    public void insert(long startFrom, @Nonnull byte[] insertedData, int insertedDataOffset, int length) {
         if (startFrom > data.length) {
             throw new OutOfBoundsException("Data can be inserted only inside or at the end");
         }
@@ -125,7 +126,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void insert(long startFrom, BinaryData insertedData) {
+    public void insert(long startFrom, @Nonnull BinaryData insertedData) {
         if (startFrom > data.length) {
             throw new OutOfBoundsException("Data can be inserted only inside or at the end");
         }
@@ -137,12 +138,15 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void insert(long startFrom, BinaryData insertedData, long insertedDataOffset, long insertedDataLength) {
+    public void insert(long startFrom, @Nonnull BinaryData insertedData, long insertedDataOffset, long insertedDataLength) {
         if (startFrom > data.length) {
             throw new OutOfBoundsException("Data can be inserted only inside or at the end");
         }
         if (insertedData instanceof ByteArrayData) {
-            insert(startFrom, ((ByteArrayData) insertedData).data);
+            if (insertedDataOffset > Integer.MAX_VALUE || insertedDataLength > Integer.MAX_VALUE) {
+                throw new OutOfBoundsException("Out of range");
+            }
+            insert(startFrom, ((ByteArrayData) insertedData).data, (int) insertedDataOffset, (int) insertedDataLength);
         } else {
             long length = insertedDataLength;
             if (length > 0) {
@@ -158,7 +162,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public long insert(long startFrom, InputStream inputStream, long dataSize) throws IOException {
+    public long insert(long startFrom, @Nonnull InputStream inputStream, long dataSize) throws IOException {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[BUFFER_SIZE];
             while (inputStream.available() > 0 && dataSize > 0) {
@@ -200,12 +204,12 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void replace(long targetPosition, BinaryData sourceData) {
+    public void replace(long targetPosition, @Nonnull BinaryData sourceData) {
         replace(targetPosition, sourceData, 0, sourceData.getDataSize());
     }
 
     @Override
-    public void replace(long targetPosition, BinaryData sourceData, long startFrom, long length) {
+    public void replace(long targetPosition, @Nonnull BinaryData sourceData, long startFrom, long length) {
         if (targetPosition + length > getDataSize()) {
             throw new OutOfBoundsException("Data can be replaced only inside or at the end");
         }
@@ -223,12 +227,12 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void replace(long targetPosition, byte[] replacingData) {
+    public void replace(long targetPosition, @Nonnull byte[] replacingData) {
         replace(targetPosition, replacingData, 0, replacingData.length);
     }
 
     @Override
-    public void replace(long targetPosition, byte[] replacingData, int replacingDataOffset, int length) {
+    public void replace(long targetPosition, @Nonnull byte[] replacingData, int replacingDataOffset, int length) {
         if (targetPosition + length > getDataSize()) {
             throw new OutOfBoundsException("Data can be replaced only inside or at the end");
         }
@@ -254,12 +258,14 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
+    @Nonnull
     public BinaryData copy() {
         byte[] copy = Arrays.copyOf(data, data.length);
         return new ByteArrayEditableData(copy);
     }
 
     @Override
+    @Nonnull
     public BinaryData copy(long startFrom, long length) {
         if (startFrom + length > data.length) {
             throw new OutOfBoundsException("Attemt to copy outside of data");
@@ -275,7 +281,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
-    public void loadFromStream(InputStream inputStream) throws IOException {
+    public void loadFromStream(@Nonnull InputStream inputStream) throws IOException {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[BUFFER_SIZE];
             while (inputStream.available() > 0) {
@@ -289,6 +295,7 @@ public class ByteArrayEditableData extends ByteArrayData implements EditableBina
     }
 
     @Override
+    @Nonnull
     public OutputStream getDataOutputStream() {
         return new ByteArrayDataOutputStream(this);
     }

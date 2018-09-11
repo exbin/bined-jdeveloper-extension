@@ -20,8 +20,8 @@ import java.io.IOException;
 /**
  * Interface for seekable stream.
  *
- * @version 0.1.0 2016/05/24
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public interface SeekableStream {
 
@@ -32,12 +32,12 @@ public interface SeekableStream {
      * @param position target position
      * @throws IOException if input/output error
      */
-    public void seek(long position) throws IOException;
+    void seek(long position) throws IOException;
 
     /**
      * Returns length of the stream.
      *
      * @return length of the stream in bytes, -1 if unable to determine
      */
-    public long getStreamSize();
+    long getStreamSize();
 }

@@ -17,19 +17,21 @@ package org.exbin.utils.binary_data;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import javax.annotation.Nonnull;
 
 /**
  * Byte array data output stream.
  *
- * @version 0.1.0 2016/05/24
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public class ByteArrayDataOutputStream extends OutputStream implements SeekableStream, FinishableStream {
 
+    @Nonnull
     private final ByteArrayEditableData data;
     private long position = 0;
 
-    public ByteArrayDataOutputStream(ByteArrayEditableData data) {
+    public ByteArrayDataOutputStream(@Nonnull ByteArrayEditableData data) {
         this.data = data;
     }
 
@@ -44,7 +46,7 @@ public class ByteArrayDataOutputStream extends OutputStream implements SeekableS
     }
 
     @Override
-    public void write(byte[] input, int off, int len) throws IOException {
+    public void write(@Nonnull byte[] input, int off, int len) throws IOException {
         if (len == 0) {
             return;
         }

@@ -17,19 +17,21 @@ package org.exbin.utils.binary_data;
 
 import java.io.IOException;
 import java.io.InputStream;
+import javax.annotation.Nonnull;
 
 /**
  * Byte array data input stream.
  *
- * @version 0.1.0 2016/05/24
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public class ByteArrayDataInputStream extends InputStream implements SeekableStream, FinishableStream {
 
+    @Nonnull
     private final ByteArrayData data;
     private long position = 0;
 
-    public ByteArrayDataInputStream(ByteArrayData data) {
+    public ByteArrayDataInputStream(@Nonnull ByteArrayData data) {
         this.data = data;
     }
 
@@ -53,12 +55,19 @@ public class ByteArrayDataInputStream extends InputStream implements SeekableStr
     }
 
     @Override
-    public int read(byte[] output, int off, int len) throws IOException {
+    public int read(@Nonnull byte[] output, int off, int len) throws IOException {
         if (output.length == 0 || len == 0) {
             return 0;
         }
 
         byte[] byteArray = data.getData();
+        if (off + len > byteArray.length) {
+            len = byteArray.length - off;
+            if (len <= 0) {
+                return -1;
+            }
+        }
+
         System.arraycopy(byteArray, (int) position, output, off, len);
         position += len;
         return len;

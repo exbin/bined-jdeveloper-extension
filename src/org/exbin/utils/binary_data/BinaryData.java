@@ -18,12 +18,13 @@ package org.exbin.utils.binary_data;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.annotation.Nonnull;
 
 /**
  * Interface for binary data.
  *
- * @version 0.1.2 2017/01/01
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public interface BinaryData {
 
@@ -54,6 +55,7 @@ public interface BinaryData {
      *
      * @return copy of data
      */
+    @Nonnull
     BinaryData copy();
 
     /**
@@ -63,6 +65,7 @@ public interface BinaryData {
      * @param length length of area
      * @return copy of data
      */
+    @Nonnull
     BinaryData copy(long startFrom, long length);
 
     /**
@@ -81,13 +84,14 @@ public interface BinaryData {
      * @param outputStream output stream
      * @throws java.io.IOException if input/output error
      */
-    void saveToStream(OutputStream outputStream) throws IOException;
+    void saveToStream(@Nonnull OutputStream outputStream) throws IOException;
 
     /**
      * Provides handler for input stream generation.
      *
      * @return new instance of input stream
      */
+    @Nonnull
     InputStream getDataInputStream();
 
     /**

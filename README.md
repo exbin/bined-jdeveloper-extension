@@ -1,28 +1,25 @@
-DeltaHex Editor - JDeveloper Extension
-======================================
+BinEd - Binary Editor JDeveloper Extension
+==========================================
 
 Hexadecimal viewer/editor extension for Oracle JDeveloper / SQL Developer.
 
-Homepage: http://deltahex.exbin.org  
+Homepage: https://bined.exbin.org/jdeveloper-extension/  
 
 Screenshot
 ----------
 
-![DeltaHex-Editor Screenshot](images/jdeveloper-screenshot.png?raw=true)
+![BinEd-Editor Screenshot](images/jdeveloper-screenshot.png?raw=true)
 
 Features
 --------
 
-- Data as hexadecimal codes and text preview
-- TODO: Insert and overwrite edit modes
-- Support for selection and clipboard
-- TODO: Support for undo/redo
-- Support for encoding selection
-- Support for showing unprintable/whitespace characters
-- Codes can be also binary, octal or decimal
-- Searching for text / hexadecimal code with matching highlighting
-- TODO: Delta mode - Changes are stored only in memory till save
-- TODO: Support for huge files
+ - Visualize data as numerical (hexadecimal) codes and text representation
+ - Codes can be also binary, octal or decimal
+ - Support for Unicode, UTF-8 and other charsets
+ - Insert and overwrite edit modes
+ - Searching for text / hexadecimal code with matching highlighting
+ - Support for undo/redo
+ - Support for files with size up to exabytes
 
 Compiling
 ---------

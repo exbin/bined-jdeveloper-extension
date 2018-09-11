@@ -20,8 +20,8 @@ import java.io.IOException;
 /**
  * Interface for finishable stream.
  *
- * @version 0.1.0 2016/05/24
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public interface FinishableStream {
 
@@ -32,12 +32,12 @@ public interface FinishableStream {
      * @return size of data in bytes
      * @throws IOException if input/output error occurs
      */
-    public long finish() throws IOException;
+    long finish() throws IOException;
 
     /**
      * Returns size of data processed so far.
      *
      * @return size of data in bytes
      */
-    public long getLength();
+    long getLength();
 }

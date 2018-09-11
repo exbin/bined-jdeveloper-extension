@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 /**
  * Encapsulation class for binary data blob.
@@ -28,14 +29,15 @@ import java.util.List;
  * Data are stored using paging. Last page might be shorter than page size, but
  * not empty.
  *
- * @version 0.1.2 2016/12/19
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public class PagedData implements EditableBinaryData {
 
-    public int DEFAULT_PAGE_SIZE = 4096;
+    public static final int DEFAULT_PAGE_SIZE = 4096;
 
     private int pageSize = DEFAULT_PAGE_SIZE;
+    @Nonnull
     private final List<byte[]> data = new ArrayList<>();
 
     public PagedData() {
@@ -174,25 +176,25 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void insert(long startFrom, BinaryData insertedData) {
+    public void insert(long startFrom, @Nonnull BinaryData insertedData) {
         long length = insertedData.getDataSize();
         insertUninitialized(startFrom, length);
         replace(startFrom, insertedData, 0, length);
     }
 
     @Override
-    public void insert(long startFrom, BinaryData insertedData, long insertedDataOffset, long insertedDataLength) {
+    public void insert(long startFrom, @Nonnull BinaryData insertedData, long insertedDataOffset, long insertedDataLength) {
         insertUninitialized(startFrom, insertedDataLength);
         replace(startFrom, insertedData, insertedDataOffset, insertedDataLength);
     }
 
     @Override
-    public void insert(long startFrom, byte[] insertedData) {
+    public void insert(long startFrom, @Nonnull byte[] insertedData) {
         insert(startFrom, insertedData, 0, insertedData.length);
     }
 
     @Override
-    public void insert(long startFrom, byte[] insertedData, int insertedDataOffset, int insertedDataLength) {
+    public void insert(long startFrom, @Nonnull byte[] insertedData, int insertedDataOffset, int insertedDataLength) {
         if (insertedDataLength <= 0) {
             return;
         }
@@ -249,6 +251,7 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
+    @Nonnull
     public PagedData copy() {
         PagedData targetData = new PagedData();
         targetData.insert(0, this);
@@ -256,6 +259,7 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
+    @Nonnull
     public PagedData copy(long startFrom, long length) {
         PagedData targetData = new PagedData();
         targetData.insertUninitialized(0, length);
@@ -264,7 +268,7 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void copyToArray(long startFrom, byte[] target, int offset, int length) {
+    public void copyToArray(long startFrom, @Nonnull byte[] target, int offset, int length) {
         while (length > 0) {
             byte[] page = getPage((int) (startFrom / pageSize));
             int pageOffset = (int) (startFrom % pageSize);
@@ -321,6 +325,7 @@ public class PagedData implements EditableBinaryData {
      * @param pageIndex page index
      * @return data page
      */
+    @Nonnull
     public byte[] getPage(int pageIndex) {
         try {
             return data.get(pageIndex);
@@ -335,7 +340,7 @@ public class PagedData implements EditableBinaryData {
      * @param pageIndex page index
      * @param dataPage data page
      */
-    public void setPage(int pageIndex, byte[] dataPage) {
+    public void setPage(int pageIndex, @Nonnull byte[] dataPage) {
         try {
             data.set(pageIndex, dataPage);
         } catch (IndexOutOfBoundsException ex) {
@@ -344,12 +349,12 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void replace(long targetPosition, BinaryData replacingData) {
+    public void replace(long targetPosition, @Nonnull BinaryData replacingData) {
         replace(targetPosition, replacingData, 0, replacingData.getDataSize());
     }
 
     @Override
-    public void replace(long targetPosition, BinaryData replacingData, long startFrom, long length) {
+    public void replace(long targetPosition, @Nonnull BinaryData replacingData, long startFrom, long length) {
         if (targetPosition + length > getDataSize()) {
             throw new OutOfBoundsException("Data can be replaced only inside or at the end");
         }
@@ -426,12 +431,12 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void replace(long targetPosition, byte[] replacingData) {
+    public void replace(long targetPosition, @Nonnull byte[] replacingData) {
         replace(targetPosition, replacingData, 0, replacingData.length);
     }
 
     @Override
-    public void replace(long targetPosition, byte[] replacingData, int replacingDataOffset, int length) {
+    public void replace(long targetPosition, @Nonnull byte[] replacingData, int replacingDataOffset, int length) {
         if (targetPosition + length > getDataSize()) {
             throw new OutOfBoundsException("Data can be replaced only inside or at the end");
         }
@@ -458,7 +463,7 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void loadFromStream(InputStream inputStream) throws IOException {
+    public void loadFromStream(@Nonnull InputStream inputStream) throws IOException {
         data.clear();
         byte[] buffer = new byte[pageSize];
         int cnt;
@@ -481,7 +486,7 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public long insert(long startFrom, InputStream inputStream, long dataSize) throws IOException {
+    public long insert(long startFrom, @Nonnull InputStream inputStream, long dataSize) throws IOException {
         if (startFrom > getDataSize()) {
             setDataSize(startFrom);
         }
@@ -520,18 +525,20 @@ public class PagedData implements EditableBinaryData {
     }
 
     @Override
-    public void saveToStream(OutputStream outputStream) throws IOException {
+    public void saveToStream(@Nonnull OutputStream outputStream) throws IOException {
         for (byte[] dataPage : data) {
             outputStream.write(dataPage);
         }
     }
 
     @Override
+    @Nonnull
     public OutputStream getDataOutputStream() {
         return new PagedDataOutputStream(this);
     }
 
     @Override
+    @Nonnull
     public InputStream getDataInputStream() {
         return new PagedDataInputStream(this);
     }

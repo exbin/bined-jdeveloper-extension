@@ -18,12 +18,13 @@ package org.exbin.utils.binary_data;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.annotation.Nonnull;
 
 /**
  * Interface for editable binary data.
  *
- * @version 0.1.1 2016/11/01
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public interface EditableBinaryData extends BinaryData {
 
@@ -68,7 +69,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param startFrom position to insert to
      * @param insertedData data to insert
      */
-    void insert(long startFrom, byte[] insertedData);
+    void insert(long startFrom, @Nonnull byte[] insertedData);
 
     /**
      * Inserts given data to given position.
@@ -78,7 +79,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param insertedDataOffset inserted data offset
      * @param insertedDataLength inserted data length
      */
-    void insert(long startFrom, byte[] insertedData, int insertedDataOffset, int insertedDataLength);
+    void insert(long startFrom, @Nonnull byte[] insertedData, int insertedDataOffset, int insertedDataLength);
 
     /**
      * Inserts given data to given position.
@@ -86,7 +87,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param startFrom position to insert to
      * @param insertedData data to insert
      */
-    void insert(long startFrom, BinaryData insertedData);
+    void insert(long startFrom, @Nonnull BinaryData insertedData);
 
     /**
      * Inserts given data to given position.
@@ -96,7 +97,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param insertedDataOffset inserted data offset
      * @param insertedDataLength inserted data length
      */
-    void insert(long startFrom, BinaryData insertedData, long insertedDataOffset, long insertedDataLength);
+    void insert(long startFrom, @Nonnull BinaryData insertedData, long insertedDataOffset, long insertedDataLength);
 
     /**
      * Loads data from given stream expecting given size.
@@ -109,7 +110,7 @@ public interface EditableBinaryData extends BinaryData {
      * @return length of loaded data
      * @throws java.io.IOException if input/output error
      */
-    long insert(long startFrom, InputStream inputStream, long maximumDataSize) throws IOException;
+    long insert(long startFrom, @Nonnull InputStream inputStream, long maximumDataSize) throws IOException;
 
     /**
      * Replaces data in given area with given data.
@@ -120,7 +121,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param targetPosition target position to write to
      * @param replacingData data to read from
      */
-    void replace(long targetPosition, BinaryData replacingData);
+    void replace(long targetPosition, @Nonnull BinaryData replacingData);
 
     /**
      * Replaces data in given area with given data.
@@ -133,7 +134,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param startFrom position to start copy from
      * @param length length of data to copy
      */
-    void replace(long targetPosition, BinaryData replacingData, long startFrom, long length);
+    void replace(long targetPosition, @Nonnull BinaryData replacingData, long startFrom, long length);
 
     /**
      * Replaces data in given area with given data.
@@ -144,7 +145,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param targetPosition target position to write to
      * @param replacingData data to read from
      */
-    void replace(long targetPosition, byte[] replacingData);
+    void replace(long targetPosition, @Nonnull byte[] replacingData);
 
     /**
      * Replaces data in given area with given data.
@@ -157,7 +158,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param replacingDataOffset position to start copy from
      * @param length length of data to copy
      */
-    void replace(long targetPosition, byte[] replacingData, int replacingDataOffset, int length);
+    void replace(long targetPosition, @Nonnull byte[] replacingData, int replacingDataOffset, int length);
 
     /**
      * Fills given area with empty data.
@@ -199,7 +200,7 @@ public interface EditableBinaryData extends BinaryData {
      * @param inputStream input stream
      * @throws java.io.IOException if input/output error
      */
-    void loadFromStream(InputStream inputStream) throws IOException;
+    void loadFromStream(@Nonnull InputStream inputStream) throws IOException;
 
     /**
      * Provides handler for output stream generation.
@@ -208,5 +209,6 @@ public interface EditableBinaryData extends BinaryData {
      *
      * @return new instance of output stream
      */
+    @Nonnull
     OutputStream getDataOutputStream();
 }

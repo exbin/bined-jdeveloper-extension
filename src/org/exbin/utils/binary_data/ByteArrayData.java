@@ -19,32 +19,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Basic implementation of binary data interface using byte array.
  *
- * @version 0.1.0 2016/05/24
- * @author ExBin Project (http://exbin.org)
+ * @version 0.1.3 2017/05/26
+ * @author ExBin Project (https://exbin.org)
  */
 public class ByteArrayData implements BinaryData {
 
-    protected byte[] data = new byte[0];
+    @Nonnull
+    protected byte[] data;
 
     public ByteArrayData() {
+        this(null);
     }
 
-    public ByteArrayData(byte[] data) {
-        if (data == null) {
-            throw new NullPointerException();
+    public ByteArrayData(@Nullable byte[] data) {
+        if (data != null) {
+            this.data = data;
+        } else {
+            this.data = new byte[0];
         }
-        this.data = data;
     }
 
+    @Nonnull
     public byte[] getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(@Nonnull byte[] data) {
         if (data == null) {
             throw new NullPointerException();
         }
@@ -72,12 +78,14 @@ public class ByteArrayData implements BinaryData {
     }
 
     @Override
+    @Nonnull
     public BinaryData copy() {
         byte[] copy = Arrays.copyOf(data, data.length);
         return new ByteArrayData(copy);
     }
 
     @Override
+    @Nonnull
     public BinaryData copy(long startFrom, long length) {
         if (startFrom + length > data.length) {
             throw new OutOfBoundsException("Attemt to copy outside of data");
@@ -97,29 +105,30 @@ public class ByteArrayData implements BinaryData {
     }
 
     @Override
-    public void saveToStream(OutputStream outputStream) throws IOException {
+    public void saveToStream(@Nonnull OutputStream outputStream) throws IOException {
         outputStream.write(data);
     }
 
     @Override
+    @Nonnull
     public InputStream getDataInputStream() {
         return new ByteArrayDataInputStream(this);
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        return hash;
+        return Arrays.hashCode(data);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null) {
             return false;
         }
+
         if (getClass() != obj.getClass()) {
             if (obj instanceof BinaryData) {
                 // TODO Simple byte comparision, optimize ussing buffer later
@@ -139,6 +148,7 @@ public class ByteArrayData implements BinaryData {
 
             return false;
         }
+
         final ByteArrayData other = (ByteArrayData) obj;
         return Arrays.equals(this.data, other.data);
     }
