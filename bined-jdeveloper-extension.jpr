@@ -210,6 +210,34 @@
             <value n="id" v="Jsr305-3.0.2.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="Bined-core-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-delta-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-highlight-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-operation-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-operation-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Exbin-binary_data-0.1.3-20180725.210253-9.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
@@ -231,6 +259,69 @@
                <value n="id" v="Jsr305-3.0.2.jar"/>
                <value n="locked" v="true"/>
             </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-core-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-core-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-core-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-delta-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-delta-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-delta-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-highlight-swing-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-highlight-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-highlight-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-operation-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-operation-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-operation-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-operation-swing-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-operation-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-operation-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/bined-swing-0.2.0-SNAPSHOT.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Bined-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="id" v="Bined-swing-0.2.0-SNAPSHOT.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/exbin-binary_data-0.1.3-20180725.210253-9.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Exbin-binary_data-0.1.3-20180725.210253-9.jar"/>
+               <value n="id" v="Exbin-binary_data-0.1.3-20180725.210253-9.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
          </list>
       </hash>
       <list n="libraryReferences">
@@ -240,6 +331,34 @@
          </hash>
          <hash>
             <value n="id" v="Jsr305-3.0.2.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-core-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-delta-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-highlight-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-operation-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-operation-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Bined-swing-0.2.0-SNAPSHOT.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Exbin-binary_data-0.1.3-20180725.210253-9.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
