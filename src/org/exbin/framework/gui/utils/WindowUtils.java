@@ -29,58 +29,80 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.exbin.framework.gui.utils.handler.OkCancelService;
 import org.exbin.framework.gui.utils.panel.WindowHeaderPanel;
 
 /**
  * Utility static methods usable for windows and dialogs.
  *
- * @version 0.2.0 2016/12/27
+ * @version 0.2.1 2019/07/24
  * @author ExBin Project (http://exbin.org)
  */
+@ParametersAreNonnullByDefault
 public class WindowUtils {
 
     private static final int BUTTON_CLICK_TIME = 150;
     private static LookAndFeel lookAndFeel = null;
 
-    public static void addHeaderPanel(JDialog dialog, ResourceBundle resourceBundle) {
-        addHeaderPanel(dialog, resourceBundle.getString("header.title"), resourceBundle.getString("header.description"), resourceBundle.getString("header.icon"));
+    private WindowUtils() {
     }
 
-    public static void addHeaderPanel(JDialog dialog, String headerTitle, String headerDescription, String headerIcon) {
+    public static void addHeaderPanel(Window window, Class<?> resourceClass, ResourceBundle resourceBundle) {
+        addHeaderPanel(window, resourceClass, resourceBundle, null);
+    }
+
+    public static void addHeaderPanel(Window window, Class<?> resourceClass, ResourceBundle resourceBundle, @Nullable OkCancelService okCancelService) {
+        URL iconUrl = resourceClass.getResource(resourceBundle.getString("header.icon"));
+        Icon headerIcon = iconUrl != null ? new ImageIcon(iconUrl) : null;
+        WindowHeaderPanel headerPanel = addHeaderPanel(window, resourceBundle.getString("header.title"), resourceBundle.getString("header.description"), headerIcon);
+        if (okCancelService != null) {
+            WindowUtils.assignGlobalKeyListener(headerPanel, okCancelService.getOkCancelListener());
+        }
+    }
+
+    @Nonnull
+    public static WindowHeaderPanel addHeaderPanel(Window window, String headerTitle, String headerDescription, @Nullable Icon headerIcon) {
         WindowHeaderPanel headerPanel = new WindowHeaderPanel();
         headerPanel.setTitle(headerTitle);
         headerPanel.setDescription(headerDescription);
-        if (!headerIcon.isEmpty()) {
-            headerPanel.setIcon(new ImageIcon(dialog.getClass().getResource(headerIcon)));
+        if (headerIcon != null) {
+            headerPanel.setIcon(headerIcon);
         }
-        if (dialog instanceof WindowHeaderPanel.WindowHeaderDecorationProvider) {
-            ((WindowHeaderPanel.WindowHeaderDecorationProvider) dialog).setHeaderDecoration(headerPanel);
+        if (window instanceof WindowHeaderPanel.WindowHeaderDecorationProvider) {
+            ((WindowHeaderPanel.WindowHeaderDecorationProvider) window).setHeaderDecoration(headerPanel);
         } else {
-            Frame frame = getFrame(dialog);
+            Frame frame = getFrame(window);
             if (frame instanceof WindowHeaderPanel.WindowHeaderDecorationProvider) {
                 ((WindowHeaderPanel.WindowHeaderDecorationProvider) frame).setHeaderDecoration(headerPanel);
             }
         }
-        int height = dialog.getHeight() + headerPanel.getPreferredSize().height;
-        dialog.getContentPane().add(headerPanel, java.awt.BorderLayout.PAGE_START);
-        dialog.setSize(dialog.getWidth(), height);
-    }
-
-    private WindowUtils() {
+        int height = window.getHeight() + headerPanel.getPreferredSize().height;
+        ((JDialog) window).getContentPane().add(headerPanel, java.awt.BorderLayout.PAGE_START);
+        window.setSize(window.getWidth(), height);
+        return headerPanel;
     }
 
     public static void invokeWindow(final Window window) {
@@ -92,33 +114,79 @@ public class WindowUtils {
             }
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                if (window instanceof JDialog) {
-                    ((JDialog) window).setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-                }
-
-                window.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                window.setVisible(true);
+        java.awt.EventQueue.invokeLater(() -> {
+            if (window instanceof JDialog) {
+                ((JDialog) window).setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             }
+
+            window.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            window.setVisible(true);
         });
     }
 
-    public static JDialog createDialog(final Component component, Window parent, Dialog.ModalityType modalityType) {
-        JDialog dialog = new JDialog(parent, modalityType);
+    @Nonnull
+    public static DialogWrapper createDialog(final JComponent component, Component parent, String dialogTitle, Dialog.ModalityType modalityType) {
+        JDialog dialog = new JDialog(getWindow(parent), modalityType);
+        dialog.add(component);
         Dimension size = component.getPreferredSize();
         dialog.add(component);
         dialog.setSize(size.width + 8, size.height + 24);
-        return dialog;
+        dialog.setTitle(dialogTitle);
+        return new DialogWrapper() {
+            @Override
+            public void show() {
+                dialog.setVisible(true);
+            }
+
+            @Override
+            public void showCentered(@Nullable Component component) {
+                center(component);
+                show();
+            }
+
+            @Override
+            public void close() {
+                closeWindow(dialog);
+            }
+
+            @Override
+            public void dispose() {
+                dialog.dispose();
+            }
+
+            @Override
+            public Window getWindow() {
+                return dialog;
+            }
+
+            @Override
+            public Container getParent() {
+                return dialog.getParent();
+            }
+
+            @Override
+            public void center(@Nullable Component component) {
+                if (component == null) {
+                    center();
+                } else {
+                    dialog.setLocationRelativeTo(component);
+                }
+            }
+
+            @Override
+            public void center() {
+                dialog.setLocationByPlatform(true);
+            }
+        };
     }
 
-    public static JDialog createDialog(final Component component) {
+    @Nonnull
+    public static JDialog createDialog(final JComponent component) {
         JDialog dialog = new JDialog();
         Dimension size = component.getPreferredSize();
         dialog.add(component);
@@ -126,15 +194,9 @@ public class WindowUtils {
         return dialog;
     }
 
-    public static void invokeDialog(final Component component) {
+    public static void invokeDialog(final JComponent component) {
         JDialog dialog = createDialog(component);
         invokeWindow(dialog);
-    }
-
-    public static void initWindow(Window window) {
-//        if (window.getParent() instanceof XBEditorFrame) {
-//            window.setIconImage(((XBEditorFrame) window.getParent()).getMainFrameManagement().getFrameIcon());
-//        }
     }
 
     public static LookAndFeel getLookAndFeel() {
@@ -149,6 +211,7 @@ public class WindowUtils {
         window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }
 
+    @Nonnull
     public static JDialog createBasicDialog() {
         JDialog dialog = new JDialog(new javax.swing.JFrame(), true);
         dialog.setSize(640, 480);
@@ -162,12 +225,21 @@ public class WindowUtils {
      * @param component instantiated component
      * @return frame instance if found
      */
+    @Nullable
     public static Frame getFrame(Component component) {
-        Component parentComponent = SwingUtilities.getWindowAncestor(component);
+        Window parentComponent = SwingUtilities.getWindowAncestor(component);
         while (!(parentComponent == null || parentComponent instanceof Frame)) {
-            parentComponent = parentComponent.getParent();
+            parentComponent = SwingUtilities.getWindowAncestor(parentComponent);
+        }
+        if (parentComponent == null) {
+            parentComponent = JOptionPane.getRootFrame();
         }
         return (Frame) parentComponent;
+    }
+
+    @Nullable
+    public static Window getWindow(Component component) {
+        return SwingUtilities.getWindowAncestor(component);
     }
 
     /**
@@ -176,8 +248,15 @@ public class WindowUtils {
      * @param component target component
      * @param closeButton button which will be used for closing operation
      */
-    public static void assignGlobalKeyListener(Container component, final JButton closeButton) {
+    public static void assignGlobalKeyListener(Component component, final JButton closeButton) {
         assignGlobalKeyListener(component, closeButton, closeButton);
+        if (component instanceof LazyComponentsIssuable) {
+            RecursiveLazyComponentListener listener = new RecursiveLazyComponentListener((Component childComponent) -> {
+                assignGlobalKeyListener(childComponent, closeButton, closeButton);
+            });
+
+            ((LazyComponentsIssuable) component).addChildComponentListener(listener);
+        }
     }
 
     /**
@@ -187,7 +266,7 @@ public class WindowUtils {
      * @param okButton button which will be used for default ENTER
      * @param cancelButton button which will be used for closing operation
      */
-    public static void assignGlobalKeyListener(Container component, final JButton okButton, final JButton cancelButton) {
+    public static void assignGlobalKeyListener(Component component, final JButton okButton, final JButton cancelButton) {
         assignGlobalKeyListener(component, new OkCancelListener() {
             @Override
             public void okEvent() {
@@ -207,7 +286,7 @@ public class WindowUtils {
      * @param component target component
      * @param listener ok and cancel event listener
      */
-    public static void assignGlobalKeyListener(Container component, final OkCancelListener listener) {
+    public static void assignGlobalKeyListener(Component component, @Nullable final OkCancelListener listener) {
         KeyListener keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -215,6 +294,10 @@ public class WindowUtils {
 
             @Override
             public void keyPressed(KeyEvent evt) {
+                if (listener == null) {
+                    return;
+                }
+
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                     boolean performOkAction = true;
 
@@ -229,12 +312,21 @@ public class WindowUtils {
                         performOkAction = !((JEditorPane) evt.getSource()).isEditable();
                     }
 
-                    if (performOkAction && listener != null) {
+                    if (performOkAction) {
                         listener.okEvent();
                     }
+                } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    boolean performCancelAction = true;
+                    if (evt.getSource() instanceof JComboBox) {
+                        performCancelAction = !((JComboBox) evt.getSource()).isPopupVisible();
+                    } else if (evt.getSource() instanceof JRootPane) {
+                        // Ignore in popup menus
+                        performCancelAction = false;
+                    }
 
-                } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE && listener != null) {
-                    listener.cancelEvent();
+                    if (performCancelAction) {
+                        listener.cancelEvent();
+                    }
                 }
             }
 
@@ -243,26 +335,12 @@ public class WindowUtils {
             }
         };
 
-        assignGlobalKeyListener(component, keyListener);
-    }
-
-    /**
-     * Assign key listener for all focusable components recursively.
-     *
-     * @param component target component
-     * @param keyListener key lisneter
-     */
-    public static void assignGlobalKeyListener(Container component, KeyListener keyListener) {
-        Component[] comps = component.getComponents();
-        for (Component item : comps) {
-            if (item.isFocusable()) {
-                item.addKeyListener(keyListener);
+        RecursiveLazyComponentListener componentListener = new RecursiveLazyComponentListener((Component childComponent) -> {
+            if (childComponent.isFocusable()) {
+                childComponent.addKeyListener(keyListener);
             }
-
-            if (item instanceof Container) {
-                assignGlobalKeyListener((Container) item, keyListener);
-            }
-        }
+        });
+        componentListener.fireListener(component);
     }
 
     /**
@@ -274,6 +352,7 @@ public class WindowUtils {
         button.doClick(BUTTON_CLICK_TIME);
     }
 
+    @Nonnull
     public static WindowPosition getWindowPosition(Window window) {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] screenDevices = ge.getScreenDevices();
@@ -348,17 +427,37 @@ public class WindowUtils {
      * @param controlPanel control panel
      * @return panel
      */
+    @Nonnull
     public static JPanel createDialogPanel(JPanel mainPanel, JPanel controlPanel) {
         JPanel dialogPanel = new JPanel(new BorderLayout());
         dialogPanel.add(mainPanel, BorderLayout.CENTER);
         dialogPanel.add(controlPanel, BorderLayout.SOUTH);
+        Dimension mainPreferredSize = mainPanel.getPreferredSize();
+        Dimension controlPreferredSize = controlPanel.getPreferredSize();
+        dialogPanel.setPreferredSize(new Dimension(mainPreferredSize.width, mainPreferredSize.height + controlPreferredSize.height));
+        WindowUtils.assignGlobalKeyListener(mainPanel, ((OkCancelService) controlPanel).getOkCancelListener());
         return dialogPanel;
     }
 
-    public static interface OkCancelListener {
+    @ParametersAreNonnullByDefault
+    public interface DialogWrapper {
 
-        void okEvent();
+        void show();
 
-        void cancelEvent();
+        void showCentered(@Nullable Component window);
+
+        void close();
+
+        void dispose();
+
+        @Nonnull
+        Window getWindow();
+
+        @Nonnull
+        Container getParent();
+
+        void center(@Nullable Component window);
+
+        void center();
     }
 }

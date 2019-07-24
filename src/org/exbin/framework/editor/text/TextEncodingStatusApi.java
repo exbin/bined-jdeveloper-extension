@@ -16,12 +16,16 @@
  */
 package org.exbin.framework.editor.text;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Text encoding status interface.
  *
  * @version 0.2.0 2016/05/18
  * @author ExBin Project (http://exbin.org)
  */
+@ParametersAreNonnullByDefault
 public interface TextEncodingStatusApi {
 
     /**
@@ -29,7 +33,8 @@ public interface TextEncodingStatusApi {
      *
      * @return encoding
      */
-    public String getEncoding();
+    @Nonnull
+    String getEncoding();
 
     /**
      * Reports currently active encoding.

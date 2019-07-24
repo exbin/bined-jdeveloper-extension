@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-ClassPath: .
+Bundle-ClassPath: .,external:jdev-install/jdeveloper/jdev/extensions/library
 Import-Package: oracle.javatools.data,
  oracle.bali.ewt.dialog,
  oracle.javatools.controls

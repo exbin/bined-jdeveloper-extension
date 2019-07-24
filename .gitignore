@@ -1,4 +1,6 @@
 classes/
 dist/
+deploy/
 out/
+.data/
 *~

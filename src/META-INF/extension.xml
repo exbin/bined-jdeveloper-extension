@@ -27,20 +27,20 @@
         </editors>
 
       <actions xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
-        <action id="org.exbin.bined.jdeveloper.openAsHexAction">
+        <action id="org.exbin.bined.jdeveloper.openAsBinaryAction">
           <properties>
-            <property name="Name">Open As Hex...</property>
+            <property name="Name">Open As Binary...</property>
             <property name="SmallIcon">${OracleIcons.LABEL}</property>
           </properties>
         </action>
       </actions>
 
       <controllers xmlns="http://xmlns.oracle.com/ide/extension">
-        <controller class="org.exbin.bined.jdeveloper.OpenAsHexController">
+        <controller class="org.exbin.bined.jdeveloper.OpenAsBinaryController">
           <update-rules>
             <update-rule rule="always-enabled">
-              <action id="org.exbin.bined.jdeveloper.openAsHexAction">
-                <label>Open As Hex...</label>
+              <action id="org.exbin.bined.jdeveloper.openAsBinaryAction">
+                <label>Open As Binary...</label>
               </action>
             </update-rule>
           </update-rules>
@@ -64,7 +64,7 @@
                order within a menu section. Items are sorted in ascending
                order or in the order they are added if the weight is not
                unique. -->
-             <item action-ref="org.exbin.bined.jdeveloper.openAsHexAction"></item>
+             <item action-ref="org.exbin.bined.jdeveloper.openAsBinaryAction"></item>
            </section>
          </menu>
       </context-menu-hook>
@@ -78,7 +78,7 @@
           <menubar id="javax.ide.view.MAIN_WINDOW_MENUBAR_ID">
             <menu id="javax.ide.FILE_MENU_ID">
               <section id="esdksample.customsection" before="javax.ide.NEW_SECTION_ID">
-                <item action-ref="org.exbin.bined.jdeveloper.openAsHexAction"></item>
+                <item action-ref="org.exbin.bined.jdeveloper.openAsBinaryAction"></item>
               </section>
             </menu>
           </menubar>
@@ -94,7 +94,7 @@
             <!-- Add a new section after the first section in the toolbar. -->
             <section id="javax.ide.tck.toolbar.testsection"
                    after="javax.ide.NEW_SECTION_ID">
-              <item action-ref="org.exbin.bined.jdeveloper.openAsHexAction"></item>
+              <item action-ref="org.exbin.bined.jdeveloper.openAsBinaryAction"></item>
             </section>
           </toolbar>
         </toolbars>
@@ -105,7 +105,7 @@
   <hooks>
     <feature-hook>
       <description><![CDATA[
-<p>Hexadecimal editor based on bined library. Use "Open as Hex" context menu item to edit files in projects.</p>
+<p>Hexadecimal editor based on bined library. Use "Open as Binary" context menu item to edit files in projects.</p>
 
 <h1>Preview</h1>
 <p><img src="https://bined.exbin.org/images/bined-jdeveloper-extension-preview-0.2.0.png" alt="bined-jdeveloper-extension-preview"/></p>
@@ -115,7 +115,7 @@
 <li>Codes can be also binary, octal or decimal</li>
 <li>Support for Unicode, UTF-8 and other charsets</li>
 <li>Insert and overwrite edit modes</li>
-<li>Searching for text / hexadecimal code with matching highlighting</li>
+<li>Searching for text / hexadecimal code with found matches highlighting</li>
 <li>Support for undo/redo</li>
 <li>Support for files with size up to exabytes</li></ul>
     ]]></description>
@@ -125,13 +125,13 @@
     <!-- TODO Declare functionality provided by extension: org.exbin.bined.jdeveloper -->
     <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
       <actions>
-        <action id="org.exbin.bined.jdeveloper.openAsHex">
+        <action id="org.exbin.bined.jdeveloper.openAsBinary">
           <properties>
-            <property name="Name">Open As Hex</property>
+            <property name="Name">Open As Binary</property>
             <property name="SmallIcon"></property>
-            <property name="LongDescription">Open As Hex</property>
+            <property name="LongDescription">Open As Binary</property>
           </properties>
-          <controller-class>org.exbin.bined.jdeveloper.OpenAsHexController</controller-class>
+          <controller-class>org.exbin.bined.jdeveloper.OpenAsBinaryController</controller-class>
         </action>
       </actions>
     </jdeveloper-hook>
