@@ -26,7 +26,6 @@ import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfil
 import org.exbin.bined.swing.extended.layout.ExtendedCodeAreaDecorations;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.bined.FileHandlingMode;
-import org.exbin.framework.bined.options.CodeAreaOptions;
 import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
 
 /**
@@ -43,24 +42,24 @@ public class BinaryEditorPreferences {
 
     private final Preferences preferences;
 
-    private final EditorPreferences editorParameters;
-    private final StatusPreferences statusParameters;
-    private final CodeAreaPreferences codeAreaParameters;
-    private final TextEncodingPreferences encodingParameters;
-    private final CodeAreaLayoutPreferences layoutParameters;
-    private final CodeAreaThemePreferences themeParameters;
-    private final CodeAreaColorPreferences colorParameters;
+    private final EditorPreferences editorPreferences;
+    private final StatusPreferences statusPreferences;
+    private final CodeAreaPreferences codeAreaPreferences;
+    private final TextEncodingPreferences encodingPreferences;
+    private final CodeAreaLayoutPreferences layoutPreferences;
+    private final CodeAreaThemePreferences themePreferences;
+    private final CodeAreaColorPreferences colorPreferences;
 
     public BinaryEditorPreferences(Preferences preferences) {
         this.preferences = preferences;
 
-        editorParameters = new EditorPreferences(preferences);
-        statusParameters = new StatusPreferences(preferences);
-        codeAreaParameters = new CodeAreaPreferences(preferences);
-        encodingParameters = new TextEncodingPreferences(preferences);
-        layoutParameters = new CodeAreaLayoutPreferences(preferences);
-        themeParameters = new CodeAreaThemePreferences(preferences);
-        colorParameters = new CodeAreaColorPreferences(preferences);
+        editorPreferences = new EditorPreferences(preferences);
+        statusPreferences = new StatusPreferences(preferences);
+        codeAreaPreferences = new CodeAreaPreferences(preferences);
+        encodingPreferences = new TextEncodingPreferences(preferences);
+        layoutPreferences = new CodeAreaLayoutPreferences(preferences);
+        themePreferences = new CodeAreaThemePreferences(preferences);
+        colorPreferences = new CodeAreaColorPreferences(preferences);
 
         final String legacyDef = "LEGACY";
         String storedVersion = preferences.get(PREFERENCES_VERSION, legacyDef);
@@ -81,53 +80,54 @@ public class BinaryEditorPreferences {
 
     @Nonnull
     public EditorPreferences getEditorPreferences() {
-        return editorParameters;
+        return editorPreferences;
     }
 
     @Nonnull
     public StatusPreferences getStatusPreferences() {
-        return statusParameters;
+        return statusPreferences;
     }
 
     @Nonnull
     public CodeAreaPreferences getCodeAreaPreferences() {
-        return codeAreaParameters;
+        return codeAreaPreferences;
     }
 
+    @Nonnull
     public TextEncodingPreferences getEncodingPreferences() {
-        return encodingParameters;
+        return encodingPreferences;
     }
 
     @Nonnull
     public CodeAreaLayoutPreferences getLayoutPreferences() {
-        return layoutParameters;
+        return layoutPreferences;
     }
 
     @Nonnull
     public CodeAreaThemePreferences getThemePreferences() {
-        return themeParameters;
+        return themePreferences;
     }
 
     @Nonnull
     public CodeAreaColorPreferences getColorPreferences() {
-        return colorParameters;
+        return colorPreferences;
     }
 
     private void importLegacyPreferences() {
         LegacyPreferences legacyPreferences = new LegacyPreferences(preferences);
-        codeAreaParameters.setUseDefaultFont(legacyPreferences.isUseDefaultFont());
-        codeAreaParameters.setCodeFont(legacyPreferences.getCodeFont(CodeAreaOptions.DEFAULT_FONT));
-        codeAreaParameters.setCodeType(legacyPreferences.getCodeType());
-        codeAreaParameters.setRowWrappingMode(legacyPreferences.isLineWrapping() ? RowWrappingCapable.RowWrappingMode.WRAPPING : RowWrappingCapable.RowWrappingMode.NO_WRAPPING);
-        codeAreaParameters.setShowUnprintables(legacyPreferences.isShowNonprintables());
-        codeAreaParameters.setCodeCharactersCase(legacyPreferences.getCodeCharactersCase());
-        codeAreaParameters.setPositionCodeType(legacyPreferences.getPositionCodeType());
-        codeAreaParameters.setViewMode(legacyPreferences.getViewMode());
-        codeAreaParameters.setPaintRowPosBackground(legacyPreferences.isPaintRowPosBackground());
-        codeAreaParameters.setCodeColorization(legacyPreferences.isCodeColorization());
+        codeAreaPreferences.setUseDefaultFont(legacyPreferences.isUseDefaultFont());
+        codeAreaPreferences.setCodeFont(legacyPreferences.getCodeFont(CodeAreaPreferences.DEFAULT_FONT));
+        codeAreaPreferences.setCodeType(legacyPreferences.getCodeType());
+        codeAreaPreferences.setRowWrappingMode(legacyPreferences.isLineWrapping() ? RowWrappingCapable.RowWrappingMode.WRAPPING : RowWrappingCapable.RowWrappingMode.NO_WRAPPING);
+        codeAreaPreferences.setShowUnprintables(legacyPreferences.isShowNonprintables());
+        codeAreaPreferences.setCodeCharactersCase(legacyPreferences.getCodeCharactersCase());
+        codeAreaPreferences.setPositionCodeType(legacyPreferences.getPositionCodeType());
+        codeAreaPreferences.setViewMode(legacyPreferences.getViewMode());
+        codeAreaPreferences.setPaintRowPosBackground(legacyPreferences.isPaintRowPosBackground());
+        codeAreaPreferences.setCodeColorization(legacyPreferences.isCodeColorization());
 
-        editorParameters.setFileHandlingMode(legacyPreferences.isDeltaMemoryMode() ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY);
-        editorParameters.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
+        editorPreferences.setFileHandlingMode(legacyPreferences.isDeltaMemoryMode() ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY);
+        editorPreferences.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
 
         List<String> layoutProfiles = new ArrayList<>();
         layoutProfiles.add("Imported profile");
@@ -136,8 +136,8 @@ public class BinaryEditorPreferences {
         layoutProfile.setShowRowPosition(legacyPreferences.isShowLineNumbers());
         layoutProfile.setSpaceGroupSize(legacyPreferences.getByteGroupSize());
         layoutProfile.setDoubleSpaceGroupSize(legacyPreferences.getSpaceGroupSize());
-        layoutParameters.setLayoutProfile(0, layoutProfile);
-        layoutParameters.setLayoutProfilesList(layoutProfiles);
+        layoutPreferences.setLayoutProfile(0, layoutProfile);
+        layoutPreferences.setLayoutProfilesList(layoutProfiles);
 
         List<String> themeProfiles = new ArrayList<>();
         themeProfiles.add("Imported profile");
@@ -148,17 +148,17 @@ public class BinaryEditorPreferences {
         themeProfile.setDecoration(ExtendedCodeAreaDecorations.ROW_POSITION_LINE, legacyPreferences.isDecorationLineNumLine());
         themeProfile.setDecoration(ExtendedCodeAreaDecorations.SPLIT_LINE, legacyPreferences.isDecorationPreviewLine());
         themeProfile.setDecoration(ExtendedCodeAreaDecorations.BOX_LINES, legacyPreferences.isDecorationBox());
-        themeParameters.setThemeProfile(0, themeProfile);
-        themeParameters.setThemeProfilesList(themeProfiles);
+        themePreferences.setThemeProfile(0, themeProfile);
+        themePreferences.setThemeProfilesList(themeProfiles);
 
-        encodingParameters.setSelectedEncoding(legacyPreferences.getSelectedEncoding());
-        encodingParameters.setEncodings(new ArrayList<>(legacyPreferences.getEncodings()));
+        encodingPreferences.setSelectedEncoding(legacyPreferences.getSelectedEncoding());
+        encodingPreferences.setEncodings(new ArrayList<>(legacyPreferences.getEncodings()));
         Collection<String> legacyEncodings = legacyPreferences.getEncodings();
         List<String> encodings = new ArrayList<>(legacyEncodings);
         if (!encodings.isEmpty() && !encodings.contains(TextEncodingPreferences.ENCODING_UTF8)) {
             encodings.add(TextEncodingPreferences.ENCODING_UTF8);
         }
-        encodingParameters.setEncodings(encodings);
+        encodingPreferences.setEncodings(encodings);
 
         preferences.flush();
     }

@@ -32,7 +32,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
-import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
+import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
 import org.exbin.framework.gui.utils.LanguageUtils;
 import org.exbin.framework.gui.utils.WindowUtils;
 import org.exbin.framework.gui.utils.WindowUtils.DialogWrapper;
@@ -234,7 +234,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(profilesListScrollPane)
+                .addComponent(profilesListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(profilesControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -423,7 +423,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    public void loadFromOptions(CodeAreaLayoutOptions options) {
+    public void loadFromOptions(CodeAreaLayoutOptionsImpl options) {
 //        activeOptions = options;
 
         List<LayoutProfile> profiles = new ArrayList<>();
@@ -439,7 +439,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(CodeAreaLayoutOptions options) {
+    public void saveToOptions(CodeAreaLayoutOptionsImpl options) {
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
         List<LayoutProfile> profiles = model.getProfiles();

@@ -64,17 +64,26 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
+import org.exbin.bined.jdeveloper.panel.BinEdOptionsPanel;
 import org.exbin.bined.jdeveloper.panel.BinEdToolbarPanel;
+import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.bined.options.CodeAreaColorOptions;
+import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.options.CodeAreaOptions;
+import org.exbin.framework.bined.options.CodeAreaThemeOptions;
 import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.options.StatusOptions;
+import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
 import org.exbin.framework.bined.panel.ValuesPanel;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.editor.text.EncodingsHandler;
+import org.exbin.framework.editor.text.options.TextEncodingOptions;
 import org.exbin.framework.gui.about.panel.AboutPanel;
 import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.gui.utils.WindowUtils.DialogWrapper;
@@ -102,6 +111,9 @@ public class BinEdFileEditor extends Editor {
     private final ExtCodeArea codeArea;
     private final CodeAreaUndoHandler undoHandler;
     private final PropertyChangeSupport propertyChangeSupport;
+    private final ExtendedCodeAreaLayoutProfile defaultLayoutProfile;
+    private final ExtendedCodeAreaThemeProfile defaultThemeProfile;
+    private final CodeAreaColorsProfile defaultColorProfile;
 
     private BinEdToolbarPanel toolbarPanel;
     private BinaryStatusPanel statusPanel;
@@ -136,14 +148,18 @@ public class BinEdFileEditor extends Editor {
         codeArea.setPainter(new ExtendedHighlightNonAsciiCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.getCaret().setBlinkRate(300);
-        undoHandler = new CodeAreaUndoHandler(codeArea);
+        defaultLayoutProfile = codeArea.getLayoutProfile();
+        defaultThemeProfile = codeArea.getThemeProfile();
+        defaultColorProfile = codeArea.getColorsProfile();
 
+        undoHandler = new CodeAreaUndoHandler(codeArea);
         toolbarPanel = new BinEdToolbarPanel(preferences, codeArea, undoHandler);
         toolbarPanel.setSaveAction(this::saveFileButtonActionPerformed);
         statusPanel = new BinaryStatusPanel();
         codeAreaPanel.add(toolbarPanel, BorderLayout.NORTH);
         registerEncodingStatus(statusPanel);
         encodingsHandler = new EncodingsHandler();
+        encodingsHandler.setParentComponent(editorPanel);
         encodingsHandler.init();
         encodingsHandler.setTextEncodingStatus(new TextEncodingStatusApi() {
             @Override
@@ -160,15 +176,16 @@ public class BinEdFileEditor extends Editor {
             }
         });
 
-        loadFromPreferences();
-
         getSegmentsRepository();
         setNewData();
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler);
         codeArea.setCommandHandler(commandHandler);
+        registerBinaryStatus(statusPanel);
+
+        initialLoadFromPreferences();
+
         codeAreaPanel.add(codeArea, BorderLayout.CENTER);
         editorPanel.add(statusPanel, BorderLayout.SOUTH);
-        registerBinaryStatus(statusPanel);
         goToRowAction = new GoToPositionAction(codeArea);
         showHeaderAction = new AbstractAction() {
             @Override
@@ -257,12 +274,12 @@ public class BinEdFileEditor extends Editor {
                     int keyCode = keyEvent.getKeyCode();
                     switch (keyCode) {
                         case KeyEvent.VK_F: {
-                            searchAction.actionPerformed(null);
+                            searchAction.actionPerformed(new ActionEvent(keyEvent.getSource(), keyEvent.getID(), ""));
                             searchAction.switchReplaceMode(BinarySearchPanel.SearchOperation.FIND);
                             break;
                         }
                         case KeyEvent.VK_G: {
-                            goToRowAction.actionPerformed(null);
+                            goToRowAction.actionPerformed(new ActionEvent(keyEvent.getSource(), keyEvent.getID(), ""));
                             break;
                         }
                     }
@@ -288,7 +305,7 @@ public class BinEdFileEditor extends Editor {
 
             @Override
             public void changeCursorPosition() {
-                goToRowAction.actionPerformed(null);
+                goToRowAction.actionPerformed(new ActionEvent(codeAreaPanel, 0, ""));
             }
 
             @Override
@@ -309,7 +326,7 @@ public class BinEdFileEditor extends Editor {
             public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
                 FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
                 if (newHandlingMode != fileHandlingMode) {
-                    switchDeltaMemoryMode(newHandlingMode);
+                    switchFileHandlingMode(newHandlingMode);
                     preferences.getEditorPreferences().setFileHandlingMode(newHandlingMode);
                 }
             }
@@ -324,7 +341,7 @@ public class BinEdFileEditor extends Editor {
         }
     }
 
-    private void switchDeltaMemoryMode(FileHandlingMode newHandlingMode) {
+    private void switchFileHandlingMode(FileHandlingMode newHandlingMode) {
         if (newHandlingMode != fileHandlingMode) {
             // Switch memory mode
             Object dataObject = null;
@@ -789,27 +806,29 @@ public class BinEdFileEditor extends Editor {
 
         final JMenuItem optionsMenuItem = new JMenuItem("Options...");
         optionsMenuItem.addActionListener((ActionEvent e) -> {
-            final BinEdOptionsPanelBorder optionsPanel = new BinEdOptionsPanelBorder();
+            final BinEdOptionsPanelBorder optionsPanelWrapper = new BinEdOptionsPanelBorder();
+            BinEdOptionsPanel optionsPanel = optionsPanelWrapper.getOptionsPanel();
             optionsPanel.setPreferences(preferences);
-            optionsPanel.load();
-            optionsPanel.setApplyOptions(getApplyOptions());
+            optionsPanel.loadFromPreferences();
+            updateApplyOptions(optionsPanel);
+            optionsPanel.setPreferredSize(new Dimension(640, 480));
             OptionsControlPanel optionsControlPanel = new OptionsControlPanel();
-            JPanel dialogPanel = WindowUtils.createDialogPanel(optionsPanel, optionsControlPanel);
-            DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, WindowUtils.getWindow(editorPanel), "Options", Dialog.ModalityType.APPLICATION_MODAL);
+            JPanel dialogPanel = WindowUtils.createDialogPanel(optionsPanelWrapper, optionsControlPanel);
+            DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, (Component) e.getSource(), "Options", Dialog.ModalityType.APPLICATION_MODAL);
             optionsControlPanel.setHandler((OptionsControlHandler.ControlActionType actionType) -> {
-                if (actionType == OptionsControlHandler.ControlActionType.SAVE) {
-                    optionsPanel.store();
-                }
                 if (actionType != OptionsControlHandler.ControlActionType.CANCEL) {
-                    setApplyOptions(optionsPanel.getApplyOptions());
-                    encodingsHandler.setEncodings(optionsPanel.getApplyOptions().getEncodingOptions().getEncodings());
+                    optionsPanel.applyToOptions();
+                    if (actionType == OptionsControlHandler.ControlActionType.SAVE) {
+                        optionsPanel.saveToPreferences();
+                    }
+                    applyOptions(optionsPanel);
                     codeArea.repaint();
                 }
 
                 dialog.close();
             });
             dialog.getWindow().setSize(650, 460);
-            dialog.showCentered(WindowUtils.getWindow(editorPanel));
+            dialog.showCentered((Component) e.getSource());
         });
         result.add(optionsMenuItem);
 
@@ -906,47 +925,55 @@ public class BinEdFileEditor extends Editor {
         return menu;
     }
 
-    @Nonnull
-    private BinEdApplyOptions getApplyOptions() {
-        BinEdApplyOptions applyOptions = new BinEdApplyOptions();
-        applyOptions.applyFromCodeArea(codeArea);
+    private void updateApplyOptions(BinEdApplyOptions applyOptions) {
+        CodeAreaOptionsImpl.applyFromCodeArea(applyOptions.getCodeAreaOptions(), codeArea);
+        applyOptions.getEncodingOptions().setSelectedEncoding(((CharsetCapable) codeArea).getCharset().name());
+
         EditorOptions editorOptions = applyOptions.getEditorOptions();
-        editorOptions.setIsShowValuesPanel(valuesPanelVisible);
+        editorOptions.setShowValuesPanel(valuesPanelVisible);
         editorOptions.setFileHandlingMode(fileHandlingMode);
-        applyOptions.getStatusOptions().loadFromParameters(preferences.getStatusPreferences());
-        return applyOptions;
+        editorOptions.setEnterKeyHandlingMode(((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getEnterKeyHandlingMode());
+
+        // TODO applyOptions.getStatusOptions().initialLoadFromPreferences(preferences.getStatusPreferences());
     }
 
-    private void setApplyOptions(BinEdApplyOptions applyOptions) {
-        applyOptions.applyToCodeArea(codeArea);
-        EditorOptions editorOptions = applyOptions.getEditorOptions();
-        switchShowValuesPanel(editorOptions.isIsShowValuesPanel());
+    private void applyOptions(BinEdApplyOptions applyOptions) {
+        CodeAreaOptionsImpl.applyToCodeArea(applyOptions.getCodeAreaOptions(), codeArea);
 
-        FileHandlingMode newFileHandlingMode;
-        try {
-            newFileHandlingMode = editorOptions.getFileHandlingMode();
-        } catch (Exception ex) {
-            newFileHandlingMode = DEFAULT_FILE_HANDLING_MODE;
-        }
-        switchDeltaMemoryMode(newFileHandlingMode);
+        ((CharsetCapable) codeArea).setCharset(Charset.forName(applyOptions.getEncodingOptions().getSelectedEncoding()));
+        encodingsHandler.setEncodings(applyOptions.getEncodingOptions().getEncodings());
+
+        EditorOptions editorOptions = applyOptions.getEditorOptions();
+        switchShowValuesPanel(editorOptions.isShowValuesPanel());
+        ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+        switchFileHandlingMode(editorOptions.getFileHandlingMode());
 
         StatusOptions statusOptions = applyOptions.getStatusOptions();
         statusPanel.setStatusOptions(statusOptions);
         toolbarPanel.applyFromCodeArea();
 
-        int selectedLayoutProfile = preferences.getLayoutPreferences().getSelectedProfile();
+        CodeAreaLayoutOptions layoutOptions = applyOptions.getLayoutOptions();
+        int selectedLayoutProfile = layoutOptions.getSelectedProfile();
         if (selectedLayoutProfile >= 0) {
-            codeArea.setLayoutProfile(preferences.getLayoutPreferences().getLayoutProfile(selectedLayoutProfile));
+            codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
+        } else {
+            codeArea.setLayoutProfile(defaultLayoutProfile);
         }
 
-        int selectedThemeProfile = preferences.getThemePreferences().getSelectedProfile();
+        CodeAreaThemeOptions themeOptions = applyOptions.getThemeOptions();
+        int selectedThemeProfile = themeOptions.getSelectedProfile();
         if (selectedThemeProfile >= 0) {
-            codeArea.setThemeProfile(preferences.getThemePreferences().getThemeProfile(selectedThemeProfile));
+            codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
+        } else {
+            codeArea.setThemeProfile(defaultThemeProfile);
         }
 
-        int selectedColorProfile = preferences.getColorPreferences().getSelectedProfile();
+        CodeAreaColorOptions colorOptions = applyOptions.getColorOptions();
+        int selectedColorProfile = colorOptions.getSelectedProfile();
         if (selectedColorProfile >= 0) {
-            codeArea.setColorsProfile(preferences.getColorPreferences().getColorsProfile(selectedColorProfile));
+            codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));
+        } else {
+            codeArea.setColorsProfile(defaultColorProfile);
         }
     }
 
@@ -989,43 +1016,49 @@ public class BinEdFileEditor extends Editor {
         }
     }
 
-    private void loadFromPreferences() {
-        try {
-            fileHandlingMode = preferences.getEditorPreferences().getFileHandlingMode();
-        } catch (Exception ex) {
-            fileHandlingMode = DEFAULT_FILE_HANDLING_MODE;
-        }
-        CodeAreaOptions codeAreaOptions = new CodeAreaOptions();
-        codeAreaOptions.loadFromParameters(preferences.getCodeAreaPreferences());
-        codeAreaOptions.applyToCodeArea(codeArea);
-        String selectedEncoding = preferences.getEncodingPreferences().getSelectedEncoding();
-        statusPanel.setEncoding(selectedEncoding);
+    private void initialLoadFromPreferences() {
+        applyOptions(new BinEdApplyOptions() {
+            @Override
+            public CodeAreaOptions getCodeAreaOptions() {
+                return preferences.getCodeAreaPreferences();
+            }
+
+            @Override
+            public TextEncodingOptions getEncodingOptions() {
+                return preferences.getEncodingPreferences();
+            }
+
+            @Override
+            public EditorOptions getEditorOptions() {
+                return preferences.getEditorPreferences();
+            }
+
+            @Override
+            public StatusOptions getStatusOptions() {
+                return preferences.getStatusPreferences();
+            }
+
+            @Override
+            public CodeAreaLayoutOptions getLayoutOptions() {
+                return preferences.getLayoutPreferences();
+            }
+
+            @Override
+            public CodeAreaColorOptions getColorOptions() {
+                return preferences.getColorPreferences();
+            }
+
+            @Override
+            public CodeAreaThemeOptions getThemeOptions() {
+                return preferences.getThemePreferences();
+            }
+        });
+
+        encodingsHandler.loadFromPreferences(preferences.getEncodingPreferences());
         statusPanel.loadFromPreferences(preferences.getStatusPreferences());
         toolbarPanel.loadFromPreferences();
 
-        codeArea.setCharset(Charset.forName(selectedEncoding));
-        encodingsHandler.loadFromPreferences(preferences.getEncodingPreferences());
-
-        int selectedLayoutProfile = preferences.getLayoutPreferences().getSelectedProfile();
-        if (selectedLayoutProfile >= 0) {
-            codeArea.setLayoutProfile(preferences.getLayoutPreferences().getLayoutProfile(selectedLayoutProfile));
-        }
-
-        int selectedThemeProfile = preferences.getThemePreferences().getSelectedProfile();
-        if (selectedThemeProfile >= 0) {
-            codeArea.setThemeProfile(preferences.getThemePreferences().getThemeProfile(selectedThemeProfile));
-        }
-
-        int selectedColorProfile = preferences.getColorPreferences().getSelectedProfile();
-        if (selectedColorProfile >= 0) {
-            codeArea.setColorsProfile(preferences.getColorPreferences().getColorsProfile(selectedColorProfile));
-        }
-
-        // Memory mode handled from outside by isDeltaMemoryMode() method, worth fixing?
-        boolean showValuesPanel = preferences.getEditorPreferences().isShowValuesPanel();
-        if (showValuesPanel) {
-            showValuesPanel();
-        }
+        fileHandlingMode = preferences.getEditorPreferences().getFileHandlingMode();
     }
 
     public static interface CharsetChangeListener {

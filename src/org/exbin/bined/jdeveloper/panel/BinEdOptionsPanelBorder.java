@@ -33,10 +33,6 @@ public class BinEdOptionsPanelBorder extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void setPreferences(BinaryEditorPreferences preferences) {
-        optionsPanel.setPreferences(preferences);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,20 +55,7 @@ public class BinEdOptionsPanelBorder extends javax.swing.JPanel {
     private org.exbin.bined.jdeveloper.panel.BinEdOptionsPanel optionsPanel;
     // End of variables declaration//GEN-END:variables
 
-    @Nonnull
-    public BinEdApplyOptions getApplyOptions() {
-        return optionsPanel.getApplyOptions();
-    }
-
-    public void setApplyOptions(BinEdApplyOptions applyOptions) {
-        optionsPanel.setApplyOptions(applyOptions);;
-    }
-
-    public void load() {
-        optionsPanel.load();
-    }
-
-    public void store() {
-        optionsPanel.store();
+    public BinEdOptionsPanel getOptionsPanel() {
+        return optionsPanel;
     }
 }
