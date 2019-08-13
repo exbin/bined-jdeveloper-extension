@@ -40,6 +40,8 @@
                   label="Binary"
                   default="false"
                   duplicable="false"
+                  restore-at-startup="false"
+                  multifile="true"
                   editor-class="org.exbin.bined.jdeveloper.BinEdFileEditor">
             <node-type class="org.exbin.bined.jdeveloper.BinaryNode" />
             <!--<node-type class="oracle.ide.model.TextNode" />

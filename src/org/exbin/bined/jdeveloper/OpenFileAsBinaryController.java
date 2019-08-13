@@ -28,6 +28,7 @@ import oracle.ide.editor.OpenEditorOptions;
 import oracle.ide.extension.RegisteredByExtension;
 import oracle.ide.model.Element;
 import oracle.ide.model.Locatable;
+import oracle.ide.model.Node;
 import oracle.ide.net.URLChooser;
 
 /**
@@ -53,8 +54,7 @@ public final class OpenFileAsBinaryController implements Controller {
         if (url != null) {
             EditorManager editorManager = EditorManager.getEditorManager();
             Context wrappedContext = new Context(context);
-            BinaryNode node = new BinaryNode(wrappedContext.getNode());
-            node.setURL(url);
+            BinaryNode node = new BinaryNode(new Node(url));
             wrappedContext.setNode(node);
             editorManager.openEditorInFrame(BinEdFileEditor.class, wrappedContext);
         }

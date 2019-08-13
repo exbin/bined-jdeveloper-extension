@@ -40,21 +40,29 @@ public class BinaryNode extends Node {
 
     @Override
     public String getShortLabel() {
+        if (wrappedNode == null) return super.getShortLabel();
+
         return wrappedNode.getShortLabel();
     }
 
     @Override
     public String getLongLabel() {
+        if (wrappedNode == null) return super.getLongLabel();
+
         return wrappedNode.getLongLabel();
     }
 
     @Override
     public Icon getIcon() {
+        if (wrappedNode == null) return super.getIcon();
+
         return wrappedNode.getIcon();
     }
 
     @Override
     public String getToolTipText() {
+        if (wrappedNode == null) return super.getToolTipText();
+
         return wrappedNode.getToolTipText();
     }
 }

@@ -215,7 +215,14 @@ public class BinEdFileEditor extends Editor {
         codeArea.setComponentPopupMenu(new JPopupMenu() {
             @Override
             public void show(Component invoker, int x, int y) {
-                JPopupMenu popupMenu = createContextMenu(x, y);
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += ((JViewport) invoker).getParent().getX();
+                    clickedY += ((JViewport) invoker).getParent().getY();
+                }
+                
+                JPopupMenu popupMenu = createContextMenu(clickedX, clickedY);
                 popupMenu.show(invoker, x, y);
             }
         });
@@ -501,26 +508,44 @@ public class BinEdFileEditor extends Editor {
                 xmlModel.releaseReadLock();
             } * /
         } else { */
-            try {
-                InputStream stream = genericNode.getInputStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-                int nRead;
-                byte[] buffer = new byte[16384];
-
-                while ((nRead = stream.read(buffer, 0, buffer.length)) != -1) {
-                    outputStream.write(buffer, 0, nRead);
+            if (genericNode.getURL() != null && genericNode.getURL().getFile() != null) {
+                try {
+                    openFile(genericNode.getURL().getFile());
+                } catch (IOException ex) {
+                    Logger.getLogger(BinEdFileEditor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                outputStream.flush();
-
-                BinaryData data = new ByteArrayData(outputStream.toByteArray());
-                getGUI();
-                codeArea.setContentData(data);
-            } catch (IOException ex) {
-                // TODO
+            } else {
+                try {
+                    InputStream stream = genericNode.getInputStream();
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    
+                    int nRead;
+                    byte[] buffer = new byte[16384];
+    
+                    while ((nRead = stream.read(buffer, 0, buffer.length)) != -1) {
+                        outputStream.write(buffer, 0, nRead);
+                    }
+    
+                    outputStream.flush();
+    
+                    BinaryData data = new ByteArrayEditableData(outputStream.toByteArray());
+                    codeArea.setContentData(data);
+                } catch (IOException ex) {
+                    Logger.getLogger(BinEdFileEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    // TODO
+                }
             }
     //        }
+    }
+    
+    @Override
+    public void prepareForSaving(boolean isClosing) {
+        if (isClosing) {
+            if (!releaseFile()) {
+                // TODO: How to stop closing?
+                throw new IllegalStateException("Unable to save on close");
+            }
+        }
     }
 
     public Component getGUI() {
