@@ -43,7 +43,7 @@ public final class OpenAsBinaryCommand extends Command {
 
     @Override
     public int doit() throws Exception {
-        EditorManager.getEditorManager().openEditorInFrame(BinEdFileEditor.class, context);
+//        EditorManager.getEditorManager().openEditorInFrame(BinEdFileEditor.class, context);
         return 0;
     }
 }

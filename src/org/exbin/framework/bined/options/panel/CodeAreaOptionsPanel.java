@@ -38,7 +38,7 @@ import org.exbin.framework.gui.options.api.OptionsModifiedListener;
 /**
  * Code area preference parameters panel.
  *
- * @version 0.2.1 2019/07/20
+ * @version 0.2.1 2019/08/09
  * @author ExBin Project (http://exbin.org)
  */
 @ParametersAreNonnullByDefault
@@ -125,7 +125,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
 
         codeCharactersModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOWER", "UPPER" }));
 
-        viewModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DUAL", "HEXADECIMAL", "PREVIEW" }));
+        viewModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DUAL", "CODE_MATRIX", "TEXT_PREVIEW" }));
 
         showNonprintableCharactersCheckBox.setText(resourceBundle.getString("showNonprintableCharactersCheckBox.text")); // NOI18N
 
@@ -295,9 +295,9 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
             }
 
             dialog.close();
+            dialog.dispose();
         });
         dialog.showCentered(this);
-        dialog.dispose();
     }//GEN-LAST:event_selectFontButtonActionPerformed
 
     /**

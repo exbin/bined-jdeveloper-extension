@@ -7,30 +7,62 @@
   <name>${EXTENSION_NAME}</name>
   <owner>ExBin Project</owner>
 
+    <feature id="org.exbin.bined.jdeveloper" xmlns="http://xmlns.oracle.com/ide/extension">
+      <name>${EXTENSION_NAME}</name>
+      <category-id>IDE</category-id>
+      <description><![CDATA[
+<p>Hexadecimal editor based on bined library. Use "Open as Binary" context menu item to edit files in projects.</p>
+
+<h1>Preview</h1>
+<p><img src="https://bined.exbin.org/images/bined-jdeveloper-extension-preview-0.2.0.png" alt="bined-jdeveloper-extension-preview"/></p>
+
+<h1>Features</h1>
+<ul><li>Visualize data as numerical (hexadecimal) codes and text representation</li>
+<li>Codes can be also binary, octal or decimal</li>
+<li>Support for Unicode, UTF-8 and other charsets</li>
+<li>Insert and overwrite edit modes</li>
+<li>Searching for text / hexadecimal code with found matches highlighting</li>
+<li>Support for undo/redo</li>
+<li>Support for files with size up to exabytes</li></ul>
+    ]]></description>
+      <type>
+            <service can-user-disable="true" reload-if-used="true"/>
+      </type>
+      <license>Apache License, Version 2.0</license>
+      <copyright>ExBin Project</copyright>
+     </feature>
+
   <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
     <!-- TODO Declare triggering functionality provided by extension: org.exbin.bined.jdeveloper -->
     <triggers>
        <editors xmlns="http://xmlns.oracle.com/ide/extension">
-         <!-- Register our custom editor -->
           <editor id="org.exbin.bined.jdeveloper.BinEdEditor"
                   label="Binary"
                   default="false"
                   duplicable="false"
                   editor-class="org.exbin.bined.jdeveloper.BinEdFileEditor">
-            <node-type class="oracle.ide.model.TextNode" />
+            <node-type class="org.exbin.bined.jdeveloper.BinaryNode" />
+            <!--<node-type class="oracle.ide.model.TextNode" />
             <node-type class="oracle.ide.model.ImageNode" />
             <node-type class="oracle.ide.model.DataNode" />
             <node-type class="oracle.ide.model.DeployableTextNode" />
             <node-type class="oracle.ide.model.UnrecognizedTextNode" />
-            <node-type class="oracle.ide.model.XMLDataNode" />
+            <node-type class="oracle.ide.model.XMLDataNode" /> -->
           </editor>
         </editors>
 
       <actions xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
         <action id="org.exbin.bined.jdeveloper.openAsBinaryAction">
           <properties>
+            <property name="Name">Open As Binary</property>
+            <property name="SmallIcon">res:/org/exbin/bined/jdeveloper/resources/icons/icon.png</property>
+          </properties>
+        </action>
+
+        <action id="org.exbin.bined.jdeveloper.openFileAsBinaryAction">
+          <properties>
             <property name="Name">Open As Binary...</property>
-            <property name="SmallIcon">${OracleIcons.LABEL}</property>
+            <property name="SmallIcon">res:/org/exbin/bined/jdeveloper/resources/icons/icon.png</property>
           </properties>
         </action>
       </actions>
@@ -40,6 +72,16 @@
           <update-rules>
             <update-rule rule="always-enabled">
               <action id="org.exbin.bined.jdeveloper.openAsBinaryAction">
+                <label>Open As Binary</label>
+              </action>
+            </update-rule>
+          </update-rules>
+        </controller>
+
+        <controller class="org.exbin.bined.jdeveloper.OpenFileAsBinaryController">
+          <update-rules>
+            <update-rule rule="always-enabled">
+              <action id="org.exbin.bined.jdeveloper.openFileAsBinaryAction">
                 <label>Open As Binary...</label>
               </action>
             </update-rule>
@@ -59,7 +101,7 @@
              value is its own section. -->
             <!-- section element must be in namespace
              http://jcp.org/jsr/198/extension-manifest. -->
-            <section xmlns="http://jcp.org/jsr/198/extension-manifest" id="MY_CUSTOM_MENU_SECTION_ONE" weight="1.0">
+            <section xmlns="http://jcp.org/jsr/198/extension-manifest" id="org.exbin.bined.jdeveloper.customsection" weight="1.0">
               <!-- For menu items and submenus, weight determines the
                order within a menu section. Items are sorted in ascending
                order or in the order they are added if the weight is not
@@ -77,8 +119,8 @@
         <menus>
           <menubar id="javax.ide.view.MAIN_WINDOW_MENUBAR_ID">
             <menu id="javax.ide.FILE_MENU_ID">
-              <section id="esdksample.customsection" before="javax.ide.NEW_SECTION_ID">
-                <item action-ref="org.exbin.bined.jdeveloper.openAsBinaryAction"></item>
+              <section id="org.exbin.bined.jdeveloper.custommainsection" before="javax.ide.NEW_SECTION_ID">
+                <item action-ref="org.exbin.bined.jdeveloper.openFileAsBinaryAction"></item>
               </section>
             </menu>
           </menubar>
@@ -89,49 +131,44 @@
           Add the action as toolbar button in its own separator group immediately after the 
           existing "save" toolbar buttons.
         -->           
-        <toolbars>
+        <!-- <toolbars>
           <toolbar id="javax.ide.view.MAIN_WINDOW_TOOLBAR_ID">
-            <!-- Add a new section after the first section in the toolbar. -->
+            <X- Add a new section after the first section in the toolbar. -X>
             <section id="javax.ide.tck.toolbar.testsection"
                    after="javax.ide.NEW_SECTION_ID">
               <item action-ref="org.exbin.bined.jdeveloper.openAsBinaryAction"></item>
             </section>
           </toolbar>
-        </toolbars>
+        </toolbars> -->
       </menu-hook>
     </triggers>
   </trigger-hooks>
 
   <hooks>
-    <feature-hook>
-      <description><![CDATA[
-<p>Hexadecimal editor based on bined library. Use "Open as Binary" context menu item to edit files in projects.</p>
-
-<h1>Preview</h1>
-<p><img src="https://bined.exbin.org/images/bined-jdeveloper-extension-preview-0.2.0.png" alt="bined-jdeveloper-extension-preview"/></p>
-
-<h1>Features</h1>
-<ul><li>Visualize data as numerical (hexadecimal) codes and text representation</li>
-<li>Codes can be also binary, octal or decimal</li>
-<li>Support for Unicode, UTF-8 and other charsets</li>
-<li>Insert and overwrite edit modes</li>
-<li>Searching for text / hexadecimal code with found matches highlighting</li>
-<li>Support for undo/redo</li>
-<li>Support for files with size up to exabytes</li></ul>
-    ]]></description>
-      <license>Apache License, Version 2.0</license>
-      <optional>true</optional>
-    </feature-hook>
     <!-- TODO Declare functionality provided by extension: org.exbin.bined.jdeveloper -->
     <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+      <!-- Addin to register Binary editor for any editor tab -->
+      <!-- <addins>
+        <addin>org.exbin.bined.jdeveloper.BinEdEditorAddin</addin>
+      </addins> -->
+
       <actions>
         <action id="org.exbin.bined.jdeveloper.openAsBinary">
           <properties>
             <property name="Name">Open As Binary</property>
-            <property name="SmallIcon"></property>
+            <property name="SmallIcon">res:/org/exbin/bined/jdeveloper/resources/icons/icon.png</property>
             <property name="LongDescription">Open As Binary</property>
           </properties>
           <controller-class>org.exbin.bined.jdeveloper.OpenAsBinaryController</controller-class>
+        </action>
+
+        <action id="org.exbin.bined.jdeveloper.openFileAsBinary">
+          <properties>
+            <property name="Name">Open As Binary</property>
+            <property name="SmallIcon">res:/org/exbin/bined/jdeveloper/resources/icons/icon.png</property>
+            <property name="LongDescription">Open As Binary...</property>
+          </properties>
+          <controller-class>org.exbin.bined.jdeveloper.OpenFileAsBinaryController</controller-class>
         </action>
       </actions>
     </jdeveloper-hook>

@@ -480,7 +480,8 @@ public class BinEdFileEditor extends Editor {
     public void open() {
         // TODO
         final Context context = getContext();
-        final Node genericNode = context.getNode();
+        Node contextNode = context.getNode();
+        final Node genericNode = contextNode instanceof BinaryNode ? ((BinaryNode) contextNode).getWrappedNode() : context.getNode();
     /*        if (genericNode instanceof TextNode) {
             final TextNode node = (TextNode)genericNode;
             try {
@@ -535,6 +536,7 @@ public class BinEdFileEditor extends Editor {
     public void removePropertyChangeListener(@Nonnull PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
+
     @Override
     public void update(Object object, UpdateMessage updateMessage) {
     }

@@ -4,7 +4,7 @@
   <!-- The id *MUST* match exactly the id in your extension.xml. -->
   <u:update id="org.exbin.bined.jdeveloper">
     <!-- The name of your extension as you want it to appear under the check for update menu -->
-    <u:name>BinEd Hexadecimal editor</u:name>
+    <u:name>BinEd Binary/Hexadecimal editor</u:name>
     <!-- The version *MUST* match exactly the version in your extension.xml. -->
     <u:version>0.2.0</u:version>
     <u:author>ExBin Project</u:author>

@@ -113,6 +113,7 @@ public class EncodingsHandler {
                     }
 
                     dialog.close();
+                    dialog.dispose();
                 });
                 textEncodingPanel.setAddEncodingsOperation((List<String> usedEncodings) -> {
                     final List<String> result = new ArrayList<>();
@@ -127,13 +128,12 @@ public class EncodingsHandler {
                         }
 
                         addEncodingDialog.close();
+                        addEncodingDialog.dispose();
                     });
                     addEncodingDialog.showCentered(addEncodingPanel);
-                    addEncodingDialog.dispose();
                     return result;
                 });
                 dialog.showCentered(parentComponent);
-                dialog.dispose();
             }
         };
         ActionUtils.setupAction(manageEncodingsAction, resourceBundle, "manageEncodingsAction");

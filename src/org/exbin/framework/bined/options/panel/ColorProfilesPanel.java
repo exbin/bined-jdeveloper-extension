@@ -318,9 +318,9 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
             }
 
             dialog.close();
+            dialog.dispose();
         });
         dialog.showCentered(this);
-        dialog.dispose();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
@@ -357,9 +357,9 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
             }
 
             dialog.close();
+            dialog.dispose();
         });
         dialog.showCentered(this);
-        dialog.dispose();
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
@@ -408,9 +408,9 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
             }
 
             dialog.close();
+            dialog.dispose();
         });
         dialog.showCentered(this);
-        dialog.dispose();
     }//GEN-LAST:event_copyButtonActionPerformed
 
     public boolean isModified() {
