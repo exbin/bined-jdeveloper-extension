@@ -4,3 +4,7 @@ deploy/
 out/
 .data/
 *~
+legacy/11g/bined-jdeveloper-extension/classes/
+legacy/11g/bined-jdeveloper-extension/deploy/
+legacy/11g/bined-jdeveloper-extension/out/
+legacy/11g/bined-jdeveloper-extension/.data/

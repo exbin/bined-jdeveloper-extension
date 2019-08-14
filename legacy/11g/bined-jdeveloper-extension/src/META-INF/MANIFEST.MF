@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ClassPath: .,external:jdev-install/jdeveloper/jdev/extensions/library
+Import-Package: oracle.javatools.data,
+ oracle.bali.ewt.dialog,
+ oracle.javatools.controls
+Require-Bundle: oracle.jewt-core,
+  oracle.javamodel-rt,
+  oracle.javatools-nodeps,
+  oracle.ide,
+  oracle.idert,
+  oracle.jewt-core,
+  oracle.javatools,
+  oracle.icons
+
