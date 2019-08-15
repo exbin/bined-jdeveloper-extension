@@ -92,7 +92,7 @@
                </list>
                <value n="bundleManifestVersion" v="2.0.0"/>
                <value n="bundleSymbolicName" v="org.exbin.bined.jdeveloper"/>
-               <value n="bundleVersion" v="0.2.0"/>
+               <value n="bundleVersion" v="0.2.0.1"/>
                <value n="hasManifest" v="true"/>
             </hash>
             <hash n="exportDefinition">
@@ -136,6 +136,10 @@
                   </hash>
                </list>
             </hash>
+            <hash n="importDefinition">
+               <hash n="contributors"/>
+               <hash n="rules"/>
+            </hash>
             <url n="jarURL" path="../../../app/Oracle/Middleware/jdeveloper/jdev/extensions/org.exbin.bined.jdeveloper.jar"/>
             <hash n="libraryDependencies">
                <value n="IncludeLibrariesFromOtherContainers" v="true"/>
@@ -164,6 +168,13 @@
       <list n="profileList">
          <string v="edtExtensionProfile"/>
       </list>
+   </hash>
+   <hash n="oracle.jdeveloper.model.J2eeSettings">
+      <hash n="webContentSet">
+         <list n="url-path">
+            <url path="public_html/"/>
+         </list>
+      </hash>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">

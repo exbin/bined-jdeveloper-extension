@@ -22,12 +22,8 @@ import oracle.ide.Ide;
 import oracle.ide.controller.Controller;
 import oracle.ide.controller.IdeAction;
 import oracle.ide.dialogs.DialogUtil;
-import oracle.ide.editor.Editor;
 import oracle.ide.editor.EditorManager;
-import oracle.ide.editor.OpenEditorOptions;
 import oracle.ide.extension.RegisteredByExtension;
-import oracle.ide.model.Element;
-import oracle.ide.model.Locatable;
 import oracle.ide.model.Node;
 import oracle.ide.net.URLChooser;
 

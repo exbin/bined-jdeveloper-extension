@@ -17,6 +17,8 @@ package org.exbin.bined.jdeveloper;
 
 import com.sun.org.apache.xerces.internal.impl.xs.opti.DefaultNode;
 
+import java.io.IOException;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -27,23 +29,19 @@ import javax.swing.Icon;
 
 import oracle.ide.model.Node;
 
+import oracle.javatools.icons.OracleIcons;
+
 /**
  * Node used for binary data.
- * 
- * Not sure how to force JDeveloper to ignore Node so let's use fake URL.
+ *
+ * Report as data: instead of file: so that no additional tabs will be opened.
  *
  * @author ExBin Project (http://exbin.org)
- * @version 0.2.0 2019/08/14
+ * @version 0.2.0 2019/08/15
  */
 public class BinaryNode extends Node {
 
-    private static final String FAKE_PROTOCOL = "orgexbinbined";
-    private static final URLStreamHandler FAKE_PROTOCOL_HANDLER = new URLStreamHandler() {
-        @Override
-        protected URLConnection openConnection(URL u) {
-            return FAKE_PROTOCOL.equals(u.getProtocol()) ? new FakeURLStreamHandler(u) : null;
-        }
-    };
+    private static final String WRAPPED_PREFIX = "orgexbinbined::/"; // Prevent existence of the real file URL
 
     private Node wrappedNode;
 
@@ -74,7 +72,7 @@ public class BinaryNode extends Node {
     public Icon getIcon() {
         if (wrappedNode == null) return super.getIcon();
 
-        return wrappedNode.getIcon();
+        return new javax.swing.ImageIcon(getClass().getResource("/org/exbin/bined/jdeveloper/resources/icons/icon.png"));
     }
 
     @Override
@@ -90,19 +88,10 @@ public class BinaryNode extends Node {
 
         URL wrappedUrl = wrappedNode.getURL();
         try {
-            return new URL(FAKE_PROTOCOL, wrappedUrl.getHost(), wrappedUrl.getPort(), wrappedUrl.getProtocol() + "/" + wrappedUrl.getFile(), FAKE_PROTOCOL_HANDLER);
+            return new URL(wrappedUrl.getProtocol(), wrappedUrl.getHost(), wrappedUrl.getPort(), WRAPPED_PREFIX + wrappedUrl.getFile());
         } catch (MalformedURLException e) {
             return super.getURL();
         }
     }
-    
-    private static class FakeURLStreamHandler extends URLConnection {
-        public FakeURLStreamHandler(URL url) {
-            super(url);
-        }
-
-        @Override
-        public void connect() {
-        }
-    }
 }
+ 

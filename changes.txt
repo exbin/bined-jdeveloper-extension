@@ -1,4 +1,4 @@
-0.2.0.1
+0.2.0.1 (2019-08-15)
 - Fixed issue with limitation to single editor only
 - Added legacy version for 11g
 
