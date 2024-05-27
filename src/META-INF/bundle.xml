@@ -6,7 +6,7 @@
     <!-- The name of your extension as you want it to appear under the check for update menu -->
     <u:name>BinEd Binary/Hexadecimal editor</u:name>
     <!-- The version *MUST* match exactly the version in your extension.xml. -->
-    <u:version>0.2.0.1</u:version>
+    <u:version>0.2.1.snapshot</u:version>
     <u:author>ExBin Project</u:author>
     <u:author-url>https://bined.exbin.org/jdeveloper-extension/</u:author-url>
     <u:description>Hexadecimal viewer/editor extension for Oracle JDeveloper / SQL Developer.</u:description>

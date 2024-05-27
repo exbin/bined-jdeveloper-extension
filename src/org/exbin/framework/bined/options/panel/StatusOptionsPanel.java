@@ -143,9 +143,9 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCap
                     .addComponent(cursorPositionShowOffsetCheckBox)
                     .addComponent(documentSizeCodeTypeLabel)
                     .addComponent(documentSizeShowRelativeCheckBox)
-                    .addComponent(decimalGroupSizeSpinner)
-                    .addComponent(octalGroupSizeSpinner)
-                    .addComponent(hexadecimalGroupSizeSpinner)
+                    .addComponent(decimalGroupSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(octalGroupSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(hexadecimalGroupSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(decimalGroupSizeLabel)
                     .addComponent(octalGroupSizeLabel)
                     .addComponent(hexadecimalGroupSizeLabel))
@@ -187,7 +187,7 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCap
      *
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         WindowUtils.invokeDialog(new StatusOptionsPanel());
     }
 

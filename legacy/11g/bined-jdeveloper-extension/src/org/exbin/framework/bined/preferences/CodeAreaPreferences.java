@@ -75,7 +75,7 @@ public class CodeAreaPreferences implements CodeAreaOptions {
         }
         value = preferences.get(TextFontPreferences.PREFERENCES_TEXT_FONT_SIZE);
         if (value != null) {
-            attribs.put(TextAttribute.SIZE, new Integer(value).floatValue());
+            attribs.put(TextAttribute.SIZE, Integer.valueOf(value).floatValue());
         }
         if (Boolean.valueOf(preferences.get(TextFontPreferences.PREFERENCES_TEXT_FONT_UNDERLINE, null))) {
             attribs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);

@@ -18,9 +18,11 @@ package org.exbin.framework.editor.text.preferences;
 import org.exbin.framework.api.Preferences;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.editor.text.options.TextEncodingOptions;
+import org.exbin.xbup.core.util.StringUtils;
 
 /**
  * Text editor encodings preferences.
@@ -30,8 +32,6 @@ import org.exbin.framework.editor.text.options.TextEncodingOptions;
  */
 @ParametersAreNonnullByDefault
 public class TextEncodingPreferences implements TextEncodingOptions {
-
-    public static final String ENCODING_UTF8 = "UTF-8";
 
     public static final String PREFERENCES_TEXT_ENCODING_PREFIX = "textEncoding.";
     public static final String PREFERENCES_TEXT_ENCODING_DEFAULT = PREFERENCES_TEXT_ENCODING_PREFIX + "default";
@@ -45,7 +45,7 @@ public class TextEncodingPreferences implements TextEncodingOptions {
 
     @Nonnull
     public String getDefaultEncoding() {
-        return preferences.get(PREFERENCES_TEXT_ENCODING_DEFAULT, ENCODING_UTF8);
+        return preferences.get(PREFERENCES_TEXT_ENCODING_DEFAULT, StringUtils.ENCODING_UTF8);
     }
 
     public void setDefaultEncoding(String encodingName) {
@@ -55,7 +55,7 @@ public class TextEncodingPreferences implements TextEncodingOptions {
     @Nonnull
     @Override
     public String getSelectedEncoding() {
-        return preferences.get(PREFERENCES_TEXT_ENCODING_SELECTED, ENCODING_UTF8);
+        return preferences.get(PREFERENCES_TEXT_ENCODING_SELECTED, StringUtils.ENCODING_UTF8);
     }
 
     @Override
@@ -67,15 +67,15 @@ public class TextEncodingPreferences implements TextEncodingOptions {
     @Override
     public List<String> getEncodings() {
         List<String> encodings = new ArrayList<>();
-        String value;
+        Optional<String> value;
         int i = 0;
         do {
             value = preferences.get(PREFERENCES_TEXT_ENCODING_PREFIX + Integer.toString(i));
-            if (value != null) {
-                encodings.add(value);
+            if (value.isPresent()) {
+                encodings.add(value.get());
                 i++;
             }
-        } while (value != null);
+        } while (value.isPresent());
 
         return encodings;
     }

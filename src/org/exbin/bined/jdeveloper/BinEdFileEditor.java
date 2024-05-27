@@ -277,7 +277,7 @@ public class BinEdFileEditor extends Editor {
         codeArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                if (keyEvent.getModifiers() == ActionUtils.getMetaMask()) {
+                if (keyEvent.getModifiersEx() == ActionUtils.getMetaMask()) {
                     int keyCode = keyEvent.getKeyCode();
                     switch (keyCode) {
                         case KeyEvent.VK_F: {

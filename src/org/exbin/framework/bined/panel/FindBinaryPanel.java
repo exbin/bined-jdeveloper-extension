@@ -44,7 +44,7 @@ import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.gui.utils.LanguageUtils;
 import org.exbin.framework.gui.utils.WindowUtils;
-import org.exbin.utils.binary_data.ByteArrayEditableData;
+import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 
 /**
  * Find text/hexadecimal data panel.
@@ -496,7 +496,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
      *
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         WindowUtils.invokeDialog(new FindBinaryPanel());
     }
 

@@ -1,6 +1,6 @@
 <extension xmlns="http://jcp.org/jsr/198/extension-manifest"
   id="org.exbin.bined.jdeveloper"
-  version="0.2.0.1"
+  version="0.2.1.snapshot"
   esdk-version="1.0"
   rsbundle-class="org.exbin.bined.jdeveloper.Res">
 
